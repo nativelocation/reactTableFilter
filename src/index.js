@@ -1,12 +1,25 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import { AppContainer } from 'react-hot-loader';
+import { Provider } from 'react-redux';
+import { fromJS } from 'immutable';
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
+import configureStore from './setup/store';
+import Router from './router';
+
+import './index.css';
+
+const initialState = fromJS({});
+const store = configureStore(initialState);
+
+ReactDOM.render(
+	<AppContainer>
+		<Provider store={store}>
+			<Router />
+		</Provider>
+	</AppContainer>,
+  document.getElementById('root'));
+  
 serviceWorker.unregister();
