@@ -103,3 +103,17 @@
 .dropdown {
     display: flex;
 }
+
+#home .react-bs-container-body .table td .fa-star{
+    opacity: .3;
+    color: #baba37;
+}
+
+#home .react-bs-container-body .table td .fa-star.active{
+    opacity: 1;
+}
+
+#home .react-bs-container-body .table td .fa-user-friends {
+    margin-left: 2px;
+    color: #0077bf;
+}

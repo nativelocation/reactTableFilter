@@ -156,24 +156,31 @@ class Home extends Component {
 
 	topicFormatter = (cell, row) =>
 		row.assignment === 0 ?
-			(`<div class='info-indicator d-flex align-items-center' style="white-space: pre-wrap"><div class='round mr-2'></div><span style="width: calc(100% - 32px)">${cell}</span></div>`)
+			(`<div class='info-indicator d-flex align-items-center' style="white-space: pre-wrap"><div class='round mr-2'><i class='info fa fa-info'></i></div><span style="width: calc(100% - 32px)">${cell}</span></div>`)
 		: row.assignment === 1 ?
-			(`<div class='info-indicator d-flex align-items-center' style="white-space: pre-wrap"><div class='round yellow mr-2'></div><span style="width: calc(100% - 32px)">${cell}</span></div>`)
+			(`<div class='info-indicator d-flex align-items-center' style="white-space: pre-wrap"><div class='round yellow mr-2'><i class='info fa fa-info'></i></div><span style="width: calc(100% - 32px)">${cell}</span></div>`)
 		: row.assignment === 2 ?
-			(`<div class='info-indicator d-flex align-items-center' style="white-space: pre-wrap"><div class='round red mr-2'></div><span style="width: calc(100% - 32px)">${cell}</span></div>`)
+			(`<div class='info-indicator d-flex align-items-center' style="white-space: pre-wrap"><div class='round red mr-2'><i class='info fa fa-info'></i></div><span style="width: calc(100% - 32px)">${cell}</span></div>`)
 		: row.assignment === 3 ?
-			(`<div class='info-indicator d-flex align-items-center' style="white-space: pre-wrap"><div class='round green mr-2'></div><span style="width: calc(100% - 32px)">${cell}</span></div>`)
+			(`<div class='info-indicator d-flex align-items-center' style="white-space: pre-wrap"><div class='round green mr-2'><i class='info fa fa-info'></i></div><span style="width: calc(100% - 32px)">${cell}</span></div>`)
 		: cell
 
 	rateFormatter = (cell, row) =>
-		(`<div class='d-flex align-items-center justify-content-center w-100'>(${cell})</div>`)
+		(`<div class='d-flex align-items-center justify-content-center w-100'>
+			<i class='fa fa-star ${cell >= 1 ? 'active' : ''}'></i>
+			<i class='fa fa-star ${cell >= 2 ? 'active' : ''}'></i>
+			<i class='fa fa-star ${cell >= 3 ? 'active' : ''}'></i>
+			<i class='fa fa-star ${cell >= 4 ? 'active' : ''}'></i>
+			<i class='fa fa-star ${cell === 5 ? 'active' : ''}'></i>
+			(${cell})</div>`
+		)
 
 	kpiFormatter = (cell, row) => {
 		return (`<div class='info-indicator d-flex align-items-center justify-content-center w-100'><div class='round mr-2 text-white'>${row.kpi.length}</div></div>`)
 	}
 
 	trainFormatter = (cell, row) =>
-		(`<div class='d-flex align-items-center justify-content-center w-100'>${cell}</div>`)
+		(`<div class='d-flex align-items-center justify-content-center w-100'>${cell}${row.sideBySide === '1' ? "<i class='fa fa-user-friends'></i>" : ''}</div>`)
 
 	draFormatter = (cell, row) =>
 		(`<div class='d-flex align-items-center justify-content-center w-100'>${cell}</div>`)
@@ -220,6 +227,7 @@ class Home extends Component {
 								</div>
 							))}
 						</DropdownButton>
+
 						<DropdownButton
 							size="lg"
 							variant="light"
@@ -234,6 +242,7 @@ class Home extends Component {
 								</div>
 							))}
 						</DropdownButton>
+
 						<DropdownButton
 							size="lg"
 							variant="light"
@@ -248,6 +257,7 @@ class Home extends Component {
 								</div>
 							))}
 						</DropdownButton>
+
 						<DropdownButton
 							size="lg"
 							variant="light"
@@ -262,24 +272,26 @@ class Home extends Component {
 								</div>
 							))}
 						</DropdownButton>
+
 						<div className="search-key-container">
 							<input className="search-key p-2" />
 						</div>
-						<div className="btn secondary search-btn">search</div>
+
+						<div className="btn secondary search-btn"><i className="fa fa-search" /></div>
 					</div>
 				</div>
 				<div className="d-flex mb-3">
 					<div className="info-indicator d-flex align-items-center pr-2">
-						<div className="round mr-2"></div><span>Unassigned</span>
+						<div className="round mr-2"><i class='info fa fa-info' /></div><span>Unassigned</span>
 					</div>
 					<div className="info-indicator d-flex align-items-center pr-2">
-						<div className="round yellow mr-2"></div><span>Assigned</span>
+						<div className="round yellow mr-2"><i class='info fa fa-info' /></div><span>Assigned</span>
 					</div>
 					<div className="info-indicator d-flex align-items-center pr-2">
-						<div className="round red mr-2"></div><span>Past due</span>
+						<div className="round red mr-2"><i class='info fa fa-info' /></div><span>Past due</span>
 					</div>
 					<div className="info-indicator d-flex align-items-center pr-2">
-						<div className="round green mr-2"></div><span>Completed</span>
+						<div className="round green mr-2"><i class='info fa fa-info' /></div><span>Completed</span>
 					</div>
 				</div>
 				<BootstrapTable data={data} version="4" options={this.options} striped hover pagination>

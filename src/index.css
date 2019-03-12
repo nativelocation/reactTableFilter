@@ -15,3 +15,35 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+@font-face {
+  font-family: 'Font Awesome 5 Free';
+  font-style: normal;
+  font-weight: 900;
+  font-display: auto;
+  src: url("./assets/font/fa-solid-900.eot");
+  src: url("./assets/font/fa-solid-900.eot?#iefix") format("embedded-opentype"), url("./assets/font/fa-solid-900.woff") format("woff"), url("./assets/font/fa-solid-900.ttf") format("truetype"); }
+
+.fa,
+.fas {
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  font-style: normal;
+  color: white;
+}
+
+.fa-info:before {
+  content: "\f129";
+}
+
+.fa-star:before {
+  content: "\f005";
+}
+
+.fa-search:before {
+  content: "\f002";
+}
+
+.fa-user-friends:before {
+  content: "\f500";
+}
