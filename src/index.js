@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 import { fromJS } from 'immutable';
 
 import configureStore from './setup/store';
-import Router from './router';
+import Routes from './router';
 
 import './index.css';
 
@@ -17,7 +17,7 @@ const store = configureStore(initialState);
 ReactDOM.render(
 	<AppContainer>
 		<Provider store={store}>
-			<Router />
+			<Routes />
 		</Provider>
 	</AppContainer>,
   document.getElementById('root'));
