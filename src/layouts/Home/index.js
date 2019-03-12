@@ -41,31 +41,37 @@ class Home extends Component {
 				lob: {
 					placeholder: 'LOB',
 					value: '',
+					valueList: [],
 					list: [],
 				},
 				segment: {
 					placeholder: 'Segment',
 					value: '',
+					valueList: [],
 					list: [],
 				},
 				bpi: {
 					placeholder: 'BPI Flow',
 					value: '',
+					valueList: [],
 					list: [],
 				},
 				kpi: {
 					placeholder: 'KPI',
 					value: '',
+					valueList: [],
 					list: [],
 				},
 				duration: {
 					placeholder: 'Duration',
 					value: '',
+					valueList: [],
 					list: [],
 				},
 				keywords: {
 					placeholder: 'Enter Keywords',
 					value: '',
+					valueList: [],
 					list: [],
 				},
 			},
@@ -79,6 +85,7 @@ class Home extends Component {
 	}
 
 	static getDerivedStateFromProps(nextProps, prevState) {
+		console.log('here');
 		let metricsData = [], docData = [];
 		const { docList, docWithLobsSegments, metricsWithDocuments } = nextProps;
 		const filter = Object.assign({}, prevState.filter)
@@ -141,11 +148,87 @@ class Home extends Component {
 				}
 			}
 		}
+		let data = docData.length > 0 ? docData : metricsData;
+		_.remove(data, item => {
+			let flag = false;
+			if (filter.lob.valueList.length > 0) {
+				filter.lob.valueList.forEach(value => {
+					docWithLobsSegments.forEach(docWithLobsSegment => {
+						if (docWithLobsSegment.lob === value) {
+							docWithLobsSegment.subs.forEach(sub => {
+								sub.subs.forEach(itemSub => {
+									if (itemSub.docID === item.docID) {
+										flag = true;
+									}
+								});
+							});
+						}
+					});
+				});
+				return !flag;
+			} else {
+				return flag;
+			}
+			
+		});
+		_.remove(data, item => {
+			let flag = false;
+			if (filter.segment.valueList.length > 0) {
+				filter.segment.valueList.forEach(value => {
+					docWithLobsSegments.forEach(docWithLobsSegment => {
+						docWithLobsSegment.subs.forEach(sub => {
+							if (value === (docWithLobsSegment.lob + ' - ' + sub.dept_name + ' - ' + sub.segment)) {
+								sub.subs.forEach(itemSub => {
+									if (itemSub.docID === item.docID) {
+										flag = true;
+									}
+								});
+							}
+						});
+					});
+				});
+				return !flag;
+			} else {
+				return flag;
+			}
+		});
+		_.remove(data, item => {
+			let flag = false;
+			if (filter.kpi.valueList.length > 0) {
+				filter.kpi.valueList.forEach(value => {
+					metricsWithDocuments.forEach(metricsWithDocument => {
+						if (value === metricsWithDocument.metricName) {
+							metricsWithDocument.subs.forEach(sub => {
+								if (sub.docID === item.docID) {
+									flag = true;
+								}
+							});
+						}
+					});
+				});
+				return !flag;
+			} else {
+				return flag;
+			}
+		});
+		_.remove(data, item => {
+			let flag = false;
+			if (filter.duration.valueList.length > 0) {
+				filter.duration.valueList.forEach(value => {
+					if (parseInt(value) === parseInt(item.duration)) {
+						flag = true;
+					}
+				});
+				return !flag;
+			} else {
+				return flag;
+			}
+		});
 		return {
 			docList,
 			docWithLobsSegments,
 			metricsWithDocuments,
-			data: docData.length > 0 ? docData : metricsData,
+			data,
 			filter,
 		};
 	}
@@ -188,6 +271,42 @@ class Home extends Component {
 	departFormatter = (cell, row) =>
 		(`<div class='text-center w-100' style="white-space: pre-wrap">${cell}</div>`)
 
+	menuClick = (event, data, id, index) => {
+		const filter = Object.assign({}, this.state.filter);
+		const length = filter[id].valueList.length;
+		_.remove(filter[id].valueList, item => item === data.list[index]);
+		if (length === filter[id].valueList.length) {
+			filter[id].valueList.push(data.list[index]);
+		}
+		let value = '';
+		filter[id].valueList.forEach(item => {
+			value = value + item + ', ';
+		});
+		filter[id].value = value;
+		this.setState({ filter });
+	}
+
+	dropdownRender = (data, id) => (
+		<DropdownButton
+			size="lg"
+			variant="light"
+			title={data.value === '' ? data.placeholder : data.value}
+			id={`dropdown-button-drop-${id}`}
+			className={`border dropdown-button-drop-${id}`}
+		>
+			{data.list.length > 0 && data.list.map((item, index) => (
+				<div key={index}>
+					<Dropdown.Item eventKey={index} onClick={(event) => this.menuClick(event, data, id, index)}>
+						<div className="d-flex justify-content-between align-items-center">
+							<div>{item}</div>{_.findIndex(data.valueList, value => value === item) > -1 && <span>✔</span>}
+						</div>
+					</Dropdown.Item>
+					<Dropdown.Divider />
+				</div>
+			))}
+		</DropdownButton>
+	);
+
 	render() {
 		const {
 			data,
@@ -198,80 +317,11 @@ class Home extends Component {
 				<div className="title text-center">Search a document</div>
 				<div className="filter">
 					<div className="d-flex">
-						<DropdownButton
-							size="lg"
-							variant="light"
-							title={filter.lob.placeholder}
-							id='dropdown-button-drop-lob'
-							className="border dropdown-button-drop-lob"
-						>
-							{filter.lob.list.length > 0 && filter.lob.list.map((item, index) => (
-								<div key={index} >
-									<Dropdown.Item eventKey={index}>{item}</Dropdown.Item>
-									<Dropdown.Divider />
-								</div>
-							))}
-						</DropdownButton>
-
-						<DropdownButton
-							size="lg"
-							variant="light"
-							title={filter.segment.placeholder}
-							id='dropdown-button-drop-segment'
-							className="border dropdown-button-drop-segment"
-						>
-							{filter.segment.list.length > 0 && filter.segment.list.map((item, index) => (
-								<div key={index} >
-									<Dropdown.Item eventKey={index}>{item}</Dropdown.Item>
-									<Dropdown.Divider />
-								</div>
-							))}
-						</DropdownButton>
-
-						<DropdownButton
-							size="lg"
-							variant="light"
-							title={filter.bpi.placeholder}
-							id='dropdown-button-drop-bpi'
-							className="border dropdown-button-drop-bpi"
-						>
-							{filter.bpi.list.length > 0 && filter.bpi.list.map((item, index) => (
-								<div key={index} >
-									<Dropdown.Item eventKey={index}>{item}</Dropdown.Item>
-									<Dropdown.Divider />
-								</div>
-							))}
-						</DropdownButton>
-
-						<DropdownButton
-							size="lg"
-							variant="light"
-							title={filter.kpi.placeholder}
-							id='dropdown-button-drop-kpi'
-							className="border dropdown-button-drop-kpi"
-						>
-							{filter.kpi.list.length > 0 && filter.kpi.list.map((item, index) => (
-								<div key={index} >
-									<Dropdown.Item eventKey={index}>{item}</Dropdown.Item>
-									<Dropdown.Divider />
-								</div>
-							))}
-						</DropdownButton>
-
-						<DropdownButton
-							size="lg"
-							variant="light"
-							title={filter.duration.placeholder}
-							id='dropdown-button-drop-duration'
-							className="border dropdown-button-drop-duration"
-						>
-							{filter.duration.list.length > 0 && filter.duration.list.map((item, index) => (
-								<div key={index} >
-									<Dropdown.Item eventKey={index}>{item}</Dropdown.Item>
-									<Dropdown.Divider />
-								</div>
-							))}
-						</DropdownButton>
+						{this.dropdownRender(filter.lob, 'lob')}
+						{this.dropdownRender(filter.segment, 'segment')}
+						{this.dropdownRender(filter.bpi, 'bpi')}
+						{this.dropdownRender(filter.kpi, 'kpi')}
+						{this.dropdownRender(filter.duration, 'duration')}
 
 						<div className="search-key-container">
 							<input className="search-key p-2" />
@@ -282,16 +332,16 @@ class Home extends Component {
 				</div>
 				<div className="d-flex mb-3">
 					<div className="info-indicator d-flex align-items-center pr-2">
-						<div className="round mr-2"><i class='info fa fa-info' /></div><span>Unassigned</span>
+						<div className="round mr-2"><i className='info fa fa-info' /></div><span>Unassigned</span>
 					</div>
 					<div className="info-indicator d-flex align-items-center pr-2">
-						<div className="round yellow mr-2"><i class='info fa fa-info' /></div><span>Assigned</span>
+						<div className="round yellow mr-2"><i className='info fa fa-info' /></div><span>Assigned</span>
 					</div>
 					<div className="info-indicator d-flex align-items-center pr-2">
-						<div className="round red mr-2"><i class='info fa fa-info' /></div><span>Past due</span>
+						<div className="round red mr-2"><i className='info fa fa-info' /></div><span>Past due</span>
 					</div>
 					<div className="info-indicator d-flex align-items-center pr-2">
-						<div className="round green mr-2"><i class='info fa fa-info' /></div><span>Completed</span>
+						<div className="round green mr-2"><i className='info fa fa-info' /></div><span>Completed</span>
 					</div>
 				</div>
 				<BootstrapTable data={data} version="4" options={this.options} striped hover pagination>
