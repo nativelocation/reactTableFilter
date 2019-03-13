@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
-import { Dropdown, DropdownButton } from 'react-bootstrap';
 import '../../../node_modules/bootstrap/dist/css/bootstrap.css';
 import '../../../node_modules/react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 
@@ -20,6 +19,7 @@ import {
 	getMetricsWithDocuments,
 } from '../../redux/actions';
 
+import DropDownMenu from '../../components/DropDownMenu/index.js';
 import './style.css';
 
 class Home extends Component {
@@ -37,44 +37,38 @@ class Home extends Component {
 			docWithLobsSegments: props.docWithLobsSegments,
 			metricsWithDocuments: props.metricsWithDocuments,
 			data: [],
-			filter: {
-				lob: {
+			filter: [
+				{
 					placeholder: 'LOB',
 					value: '',
 					valueList: [],
 					list: [],
 				},
-				segment: {
+				{
 					placeholder: 'Segment',
 					value: '',
 					valueList: [],
 					list: [],
 				},
-				bpi: {
+				{
 					placeholder: 'BPI Flow',
 					value: '',
 					valueList: [],
 					list: [],
 				},
-				kpi: {
+				{
 					placeholder: 'KPI',
 					value: '',
 					valueList: [],
 					list: [],
 				},
-				duration: {
+				{
 					placeholder: 'Duration',
 					value: '',
 					valueList: [],
 					list: [],
 				},
-				keywords: {
-					placeholder: 'Enter Keywords',
-					value: '',
-					valueList: [],
-					list: [],
-				},
-			},
+			],
 		}
 	}
 
@@ -85,15 +79,14 @@ class Home extends Component {
 	}
 
 	static getDerivedStateFromProps(nextProps, prevState) {
-		console.log('here');
 		let metricsData = [], docData = [];
 		const { docList, docWithLobsSegments, metricsWithDocuments } = nextProps;
-		const filter = Object.assign({}, prevState.filter)
+		const filter = prevState.filter.slice();
 		if (docWithLobsSegments.length > 0) {
-			filter.lob.list = docWithLobsSegments.map(item => item.lob);
+			filter[0].list = docWithLobsSegments.map(item => item.lob);
 		}
 		if (docList.length > 0) {
-			filter.duration.list = _.sortBy(_.uniq(docList.map(item => item.duration)));
+			filter[4].list = _.sortBy(_.uniq(docList.map(item => item.duration)));
 		}
 		if (docList.length > 0 && metricsWithDocuments.length > 0) {
 			metricsData = docList.map(docItem => {
@@ -112,7 +105,7 @@ class Home extends Component {
 					kpi,
 				};
 			});
-			filter.kpi.list = _.sortBy(_.uniq(metricsWithDocuments.map(metricsWithDocument => metricsWithDocument.metricName)));
+			filter[3].list = _.sortBy(_.uniq(metricsWithDocuments.map(metricsWithDocument => metricsWithDocument.metricName)));
 		}
 		if (docList.length > 0 && docWithLobsSegments.length > 0) {
 			const tData = metricsData.length > 0 ? metricsData : docList;
@@ -135,14 +128,15 @@ class Home extends Component {
 				};
 			});
 			if (docWithLobsSegments.length > 0) {
-				if (filter.lob.value === '') {
+				filter[1].list = [];
+				if (filter[0].value === '') {
 					docWithLobsSegments.forEach(docWithLobsSegment => {
-						docWithLobsSegment.subs.forEach(sub => filter.segment.list.push(docWithLobsSegment.lob + ' - ' + sub.dept_name + ' - ' + sub.segment));
+						docWithLobsSegment.subs.forEach(sub => filter[1].list.push(docWithLobsSegment.lob + ' - ' + sub.dept_name + ' - ' + sub.segment));
 					});
 				} else {
 					docWithLobsSegments.forEach(docWithLobsSegment => {
-						if (docWithLobsSegment.lob === filter.lob.value) {
-							docWithLobsSegment.subs.forEach(sub => filter.segment.list.push(docWithLobsSegment.lob + ' - ' + sub.dept_name + ' - ' + sub.segment));
+						if (_.findIndex(filter[0].valueList, item => item === docWithLobsSegment.lob) > -1) {
+							docWithLobsSegment.subs.forEach(sub => filter[1].list.push(docWithLobsSegment.lob + ' - ' + sub.dept_name + ' - ' + sub.segment));
 						}
 					});
 				}
@@ -151,8 +145,8 @@ class Home extends Component {
 		let data = docData.length > 0 ? docData : metricsData;
 		_.remove(data, item => {
 			let flag = false;
-			if (filter.lob.valueList.length > 0) {
-				filter.lob.valueList.forEach(value => {
+			if (filter[0].valueList.length > 0) {
+				filter[0].valueList.forEach(value => {
 					docWithLobsSegments.forEach(docWithLobsSegment => {
 						if (docWithLobsSegment.lob === value) {
 							docWithLobsSegment.subs.forEach(sub => {
@@ -169,12 +163,11 @@ class Home extends Component {
 			} else {
 				return flag;
 			}
-			
 		});
 		_.remove(data, item => {
 			let flag = false;
-			if (filter.segment.valueList.length > 0) {
-				filter.segment.valueList.forEach(value => {
+			if (filter[1].valueList.length > 0) {
+				filter[1].valueList.forEach(value => {
 					docWithLobsSegments.forEach(docWithLobsSegment => {
 						docWithLobsSegment.subs.forEach(sub => {
 							if (value === (docWithLobsSegment.lob + ' - ' + sub.dept_name + ' - ' + sub.segment)) {
@@ -194,8 +187,8 @@ class Home extends Component {
 		});
 		_.remove(data, item => {
 			let flag = false;
-			if (filter.kpi.valueList.length > 0) {
-				filter.kpi.valueList.forEach(value => {
+			if (filter[3].valueList.length > 0) {
+				filter[3].valueList.forEach(value => {
 					metricsWithDocuments.forEach(metricsWithDocument => {
 						if (value === metricsWithDocument.metricName) {
 							metricsWithDocument.subs.forEach(sub => {
@@ -213,8 +206,8 @@ class Home extends Component {
 		});
 		_.remove(data, item => {
 			let flag = false;
-			if (filter.duration.valueList.length > 0) {
-				filter.duration.valueList.forEach(value => {
+			if (filter[4].valueList.length > 0) {
+				filter[4].valueList.forEach(value => {
 					if (parseInt(value) === parseInt(item.duration)) {
 						flag = true;
 					}
@@ -271,41 +264,7 @@ class Home extends Component {
 	departFormatter = (cell, row) =>
 		(`<div class='text-center w-100' style="white-space: pre-wrap">${cell}</div>`)
 
-	menuClick = (event, data, id, index) => {
-		const filter = Object.assign({}, this.state.filter);
-		const length = filter[id].valueList.length;
-		_.remove(filter[id].valueList, item => item === data.list[index]);
-		if (length === filter[id].valueList.length) {
-			filter[id].valueList.push(data.list[index]);
-		}
-		let value = '';
-		filter[id].valueList.forEach(item => {
-			value = value + item + ', ';
-		});
-		filter[id].value = value;
-		this.setState({ filter });
-	}
-
-	dropdownRender = (data, id) => (
-		<DropdownButton
-			size="lg"
-			variant="light"
-			title={data.value === '' ? data.placeholder : data.value}
-			id={`dropdown-button-drop-${id}`}
-			className={`border dropdown-button-drop-${id}`}
-		>
-			{data.list.length > 0 && data.list.map((item, index) => (
-				<div key={index}>
-					<Dropdown.Item eventKey={index} onClick={(event) => this.menuClick(event, data, id, index)}>
-						<div className="d-flex justify-content-between align-items-center">
-							<div>{item}</div>{_.findIndex(data.valueList, value => value === item) > -1 && <span>✔</span>}
-						</div>
-					</Dropdown.Item>
-					<Dropdown.Divider />
-				</div>
-			))}
-		</DropdownButton>
-	);
+	setFilter = filter => this.setState({ filter });
 
 	render() {
 		const {
@@ -317,11 +276,13 @@ class Home extends Component {
 				<div className="title text-center">Search a document</div>
 				<div className="filter">
 					<div className="d-flex">
-						{this.dropdownRender(filter.lob, 'lob')}
-						{this.dropdownRender(filter.segment, 'segment')}
-						{this.dropdownRender(filter.bpi, 'bpi')}
-						{this.dropdownRender(filter.kpi, 'kpi')}
-						{this.dropdownRender(filter.duration, 'duration')}
+						{filter.map((item, index) => (
+							<DropDownMenu
+								key={index}
+								id={index}
+								filter={filter}
+								setFilter={this.setFilter}
+							/>))}
 
 						<div className="search-key-container">
 							<input className="search-key p-2" />

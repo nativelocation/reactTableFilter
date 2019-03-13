@@ -12,26 +12,6 @@
     height: 100%;
 }
 
-#dropdown-button-drop-lob,
-#dropdown-button-drop-segment,
-#dropdown-button-drop-bpi,
-#dropdown-button-drop-kpi,
-#dropdown-button-drop-duration {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.9rem;
-}
-
-.dropdown-button-drop-lob,
-.dropdown-button-drop-segment,
-.dropdown-button-drop-bpi,
-.dropdown-button-drop-kpi,
-.dropdown-button-drop-duration {
-    flex: 2;
-}
-
 .search-key-container {
     flex: 3;
 }
