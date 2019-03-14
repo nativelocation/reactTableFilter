@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 
-import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+// import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import '../../../node_modules/bootstrap/dist/css/bootstrap.css';
 // import '../../../node_modules/react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 
@@ -207,7 +207,7 @@ class Home extends Component {
 			docList,
 			docWithLobsSegments,
 			metricsWithDocuments,
-			data: _.sortBy(data, item => item.moduleEN),
+			data: _.sortBy(data, item => item.moduleEN.toLowerCase()),
 			filter,
 		};
 	}
@@ -219,8 +219,8 @@ class Home extends Component {
 	setFilter = filter => this.setState({ filter });
 
 	indicatorRender = (color, title) => (
-		<div className="info-indicator d-flex align-items-center pr-2">
-			<div className={`round ${color}mr-2`}><i className='info fa fa-info' /></div><span>{title}</span>
+		<div className="info-indicator" style={{ display: 'flex', alignItems: 'center', paddingRight: '4px' }}>
+			<div className={`round ${color}`} style={{ marginRight: '4px' }}><i className='info fa fa-info' /></div><span>{title}</span>
 		</div>
 	);
 
@@ -248,10 +248,10 @@ class Home extends Component {
 			pageNumber,
 		} = this.state;
 		return (
-			<div id="home" className="p-4">
-				<div className="title text-center">Search a document</div>
+			<div id="home" style={{ padding: '1rem' }}>
+				<div className="title">Search a document</div>
 				<div className="filter">
-					<div className="d-flex">
+					<div style={{ display: 'flex' }}>
 						{filter.map((item, index) => (
 							<DropDownMenu
 								key={index}
@@ -261,13 +261,13 @@ class Home extends Component {
 							/>))}
 
 						<div className="search-key-container">
-							<input className="search-key p-2" />
+							<input className="search-key" />
 						</div>
 
-						<div className="btn secondary search-btn"><i className="fa fa-search" /></div>
+						<div className="btn search-btn"><i className="fa fa-search" /></div>
 					</div>
 				</div>
-				<div className="d-flex mb-3">
+				<div style={{ display: 'flex', marginBottom: '8px' }}>
 					{this.indicatorRender('', 'Unassigned')}
 					{this.indicatorRender('yellow ', 'Assigned')}
 					{this.indicatorRender('red ', 'Past due')}
@@ -328,16 +328,16 @@ class Home extends Component {
 									{data.slice((pageNumber - 1) * 10, pageNumber * 10).map((item, index) => (
 										<tr key={index}>
 											<td tabIndex="1" style={{ textAlign: 'left' }}>
-												<div className="info-indicator d-flex align-items-center" style={{ whiteSpace: 'pre-wrap' }}>
-													{item.assignment === 0 && <div className="round mr-2"><i className="info fa fa-info"></i></div>}
-													{item.assignment === 1 && <div className="round yellow mr-2"><i className="info fa fa-info"></i></div>}
-													{item.assignment === 2 && <div className="round red mr-2"><i className="info fa fa-info"></i></div>}
-													{item.assignment === 3 && <div className="round green mr-2"><i className="info fa fa-info"></i></div>}
+												<div className="info-indicator" style={{ display: 'flex', alignItems: 'center', whiteSpace: 'pre-wrap' }}>
+													{item.assignment === 0 && <div className="round" style={{ marginRight: '4px' }}><i className="info fa fa-info"></i></div>}
+													{item.assignment === 1 && <div className="round yellow" style={{ marginRight: '4px' }}><i className="info fa fa-info"></i></div>}
+													{item.assignment === 2 && <div className="round red" style={{ marginRight: '4px' }}><i className="info fa fa-info"></i></div>}
+													{item.assignment === 3 && <div className="round green" style={{ marginRight: '4px' }}><i className="info fa fa-info"></i></div>}
 													<span style={{ width: 'calc(100% - 32px)' }}>{item.moduleEN}</span>
 												</div>
 											</td>
 											<td tabIndex="2" style={{ textAlign: 'left' }}>
-												<div className="d-flex align-items-center justify-content-center w-100">
+												<div className="dis-flex">
 													<i className={`fa fa-star ${item.avgRatings >= 1 ? 'active' : ''}`}></i>
 													<i className={`fa fa-star ${item.avgRatings >= 2 ? 'active' : ''}`}></i>
 													<i className={`fa fa-star ${item.avgRatings >= 3 ? 'active' : ''}`}></i>
@@ -347,23 +347,23 @@ class Home extends Component {
 												</div>
 											</td>
 											<td tabIndex="3" style={{ textAlign: 'left' }}>
-												<div className="d-flex align-items-center justify-content-center w-100">
+												<div className="dis-flex">
 													{item.trainingType}{item.sideBySide === '1' && <i className="fa fa-user-friends"></i>}
 												</div>
 											</td>
 											<td tabIndex="4" style={{ textAlign: 'left' }}>
-												<div className="info-indicator d-flex align-items-center justify-content-center w-100">
-													<div className="round mr-2 text-white">{item.kpi.length}</div>
+												<div className="info-indicator dis-flex">
+													<div className="round text-white" style={{ marginRight: '4px' }}>{item.kpi.length}</div>
 												</div>
 											</td>
 											<td tabIndex="5" style={{ textAlign: 'left' }}>
-												<div className="text-center w-100" style={{ whiteSpace: 'pre-wrap' }}>{item.departments}</div>
+												<div style={{ textAlign: 'center', width: '100%', whiteSpace: 'pre-wrap' }}>{item.departments}</div>
 											</td>
 											<td tabIndex="6" style={{ textAlign: 'left' }}>
-												<div className="d-flex align-items-center justify-content-center w-100">{item.duration}</div>
+												<div className="dis-flex">{item.duration}</div>
 											</td>
 											<td tabIndex="7" style={{ textAlign: 'left' }}>
-												<div className="d-flex align-items-center justify-content-center w-100">{item.lastUpdated}</div>
+												<div className="dis-flex">{item.lastUpdated}</div>
 											</td>
 										</tr>)
 									)}
