@@ -1,26 +1,17 @@
 
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import _ from 'lodash';
 
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import '../../../node_modules/bootstrap/dist/css/bootstrap.css';
-import '../../../node_modules/react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
-
-import {
-	docListSelector,
-	docWithLobsSegmentsSelector,
-	metricsWithDocumentsSelector,
-} from '../../redux/selectors';
-import {
-	getDocList,
-	getDocWithLobsSegments,
-	getMetricsWithDocuments,
-} from '../../redux/actions';
+// import '../../../node_modules/react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 
 import DropDownMenu from '../../components/DropDownMenu/index.js';
 import './style.css';
+
+import docWithLobsSegments from '../../assets/json/docWithLobsSegments.json';
+import metricsWithDocuments from '../../assets/json/metricsWithDocuments.json';
+import docList from '../../assets/json/docList.json';
 
 class Home extends Component {
 	constructor(props) {
@@ -33,10 +24,11 @@ class Home extends Component {
 		};
 
 		this.state = {
-			docList: props.docList,
-			docWithLobsSegments: props.docWithLobsSegments,
-			metricsWithDocuments: props.metricsWithDocuments,
+			docList,
+			docWithLobsSegments,
+			metricsWithDocuments,
 			data: [],
+			pageNumber: 1,
 			filter: [
 				{
 					placeholder: 'LOB',
@@ -72,15 +64,9 @@ class Home extends Component {
 		}
 	}
 
-	componentDidMount() {
-		this.props.getDocWithLobsSegments();
-		this.props.getMetricsWithDocuments();
-		this.props.getDocList();
-	}
-
 	static getDerivedStateFromProps(nextProps, prevState) {
 		let metricsData = [], docData = [];
-		const { docList, docWithLobsSegments, metricsWithDocuments } = nextProps;
+		const { docList, docWithLobsSegments, metricsWithDocuments } = prevState;
 		const filter = prevState.filter.slice();
 		if (docWithLobsSegments.length > 0) {
 			filter[0].list = docWithLobsSegments.map(item => item.lob);
@@ -221,7 +207,7 @@ class Home extends Component {
 			docList,
 			docWithLobsSegments,
 			metricsWithDocuments,
-			data,
+			data: _.sortBy(data, item => item.moduleEN),
 			filter,
 		};
 	}
@@ -230,46 +216,36 @@ class Home extends Component {
 		console.log(data);
 	}
 
-	topicFormatter = (cell, row) =>
-		row.assignment === 0 ?
-			(`<div class='info-indicator d-flex align-items-center' style="white-space: pre-wrap"><div class='round mr-2'><i class='info fa fa-info'></i></div><span style="width: calc(100% - 32px)">${cell}</span></div>`)
-		: row.assignment === 1 ?
-			(`<div class='info-indicator d-flex align-items-center' style="white-space: pre-wrap"><div class='round yellow mr-2'><i class='info fa fa-info'></i></div><span style="width: calc(100% - 32px)">${cell}</span></div>`)
-		: row.assignment === 2 ?
-			(`<div class='info-indicator d-flex align-items-center' style="white-space: pre-wrap"><div class='round red mr-2'><i class='info fa fa-info'></i></div><span style="width: calc(100% - 32px)">${cell}</span></div>`)
-		: row.assignment === 3 ?
-			(`<div class='info-indicator d-flex align-items-center' style="white-space: pre-wrap"><div class='round green mr-2'><i class='info fa fa-info'></i></div><span style="width: calc(100% - 32px)">${cell}</span></div>`)
-		: cell
-
-	rateFormatter = (cell, row) =>
-		(`<div class='d-flex align-items-center justify-content-center w-100'>
-			<i class='fa fa-star ${cell >= 1 ? 'active' : ''}'></i>
-			<i class='fa fa-star ${cell >= 2 ? 'active' : ''}'></i>
-			<i class='fa fa-star ${cell >= 3 ? 'active' : ''}'></i>
-			<i class='fa fa-star ${cell >= 4 ? 'active' : ''}'></i>
-			<i class='fa fa-star ${cell === 5 ? 'active' : ''}'></i>
-			(${cell})</div>`
-		)
-
-	kpiFormatter = (cell, row) => {
-		return (`<div class='info-indicator d-flex align-items-center justify-content-center w-100'><div class='round mr-2 text-white'>${row.kpi.length}</div></div>`)
-	}
-
-	trainFormatter = (cell, row) =>
-		(`<div class='d-flex align-items-center justify-content-center w-100'>${cell}${row.sideBySide === '1' ? "<i class='fa fa-user-friends'></i>" : ''}</div>`)
-
-	draFormatter = (cell, row) =>
-		(`<div class='d-flex align-items-center justify-content-center w-100'>${cell}</div>`)
-
-	departFormatter = (cell, row) =>
-		(`<div class='text-center w-100' style="white-space: pre-wrap">${cell}</div>`)
-
 	setFilter = filter => this.setState({ filter });
+
+	indicatorRender = (color, title) => (
+		<div className="info-indicator d-flex align-items-center pr-2">
+			<div className={`round ${color}mr-2`}><i className='info fa fa-info' /></div><span>{title}</span>
+		</div>
+	);
+
+	paginationRender = () => {
+		const { data, pageNumber } = this.state;
+		let pagination = [];
+		for(let i = 0; i < (data.length / 10); i++) {
+			pagination.push(
+				<div
+					key={i}
+					className={`pagination-field${(i + 1) === pageNumber ? ' active' : ''}`}
+					onClick={() => this.setState({ pageNumber: i + 1 })}
+				>
+					{i + 1}
+				</div>
+			);
+		}
+		return <div className="pagination-container">{pagination}</div>
+	}
 
 	render() {
 		const {
 			data,
 			filter,
+			pageNumber,
 		} = this.state;
 		return (
 			<div id="home" className="p-4">
@@ -292,56 +268,114 @@ class Home extends Component {
 					</div>
 				</div>
 				<div className="d-flex mb-3">
-					<div className="info-indicator d-flex align-items-center pr-2">
-						<div className="round mr-2"><i className='info fa fa-info' /></div><span>Unassigned</span>
-					</div>
-					<div className="info-indicator d-flex align-items-center pr-2">
-						<div className="round yellow mr-2"><i className='info fa fa-info' /></div><span>Assigned</span>
-					</div>
-					<div className="info-indicator d-flex align-items-center pr-2">
-						<div className="round red mr-2"><i className='info fa fa-info' /></div><span>Past due</span>
-					</div>
-					<div className="info-indicator d-flex align-items-center pr-2">
-						<div className="round green mr-2"><i className='info fa fa-info' /></div><span>Completed</span>
-					</div>
+					{this.indicatorRender('', 'Unassigned')}
+					{this.indicatorRender('yellow ', 'Assigned')}
+					{this.indicatorRender('red ', 'Past due')}
+					{this.indicatorRender('green ', 'Completed')}
 				</div>
-				<BootstrapTable data={data} version="4" options={this.options} striped hover pagination>
-					<TableHeaderColumn dataField="moduleEN" width={'20%'} dataFormat={this.topicFormatter} isKey dataSort>Topic</TableHeaderColumn>
-					<TableHeaderColumn dataField="countRatings" width={'150px'} dataFormat={this.rateFormatter} >Rating</TableHeaderColumn>
-					<TableHeaderColumn dataField="trainingType" width={'150px'} dataFormat={this.trainFormatter}>Training Type</TableHeaderColumn>
-					<TableHeaderColumn dataField="kpiArray" width={'80px'} dataFormat={this.kpiFormatter}>KPI</TableHeaderColumn>
-					<TableHeaderColumn dataField="departments"dataFormat={this.departFormatter}>Departments</TableHeaderColumn>
-					<TableHeaderColumn dataField="duration" width={'180px'} dataFormat={this.draFormatter}>Duration (minutes)</TableHeaderColumn>
-					<TableHeaderColumn dataField="lastUpdated" width={'140px'} dataFormat={this.draFormatter}>Last Updated</TableHeaderColumn>
-				</BootstrapTable>
+				<div className="react-bs-table-container">
+					<div className="react-bs-table react-bs-table-bordered" style={{ height: '100%' }}>
+						<div className="react-bs-container-header table-header-wrapper">
+							<table className="table table-hover table-bordered">
+								<colgroup>
+									<col style={{ width: '20%', minWidth: '20%' }} />
+									<col style={{ width: '150px', minWidth: '150px' }} />
+									<col style={{ width: '150px', minWidth: '150px' }} />
+									<col style={{ width: '80px', minWidth: '80px' }} />
+									<col />
+									<col style={{ width: '180px', minWidth: '180px' }} />
+									<col style={{ width: '140px', minWidth: '140px' }} />
+								</colgroup>
+								<thead>
+									<tr>
+										<th className="sort-column" title="Topic" data-field="moduleEN" style={{ textAlign: 'left' }}>
+											Topic<span className="fa fa-sort-desc" style={{ margin: '10px 5px' }}></span><div></div>
+										</th>
+										<th title="Rating" data-field="countRatings" style={{ textAlign: 'left' }}>
+											Rating<div></div>
+										</th>
+										<th title="Training Type" data-field="trainingType" style={{ textAlign: 'left' }}>
+											Training Type<div></div>
+										</th>
+										<th title="KPI" data-field="kpiArray" style={{ textAlign: 'left' }}>
+											KPI<div></div>
+										</th>
+										<th title="Departments" data-field="departments" style={{ textAlign: 'left' }}>
+											Departments<div></div>
+										</th>
+										<th title="Duration (minutes)" data-field="duration" style={{ textAlign: 'left' }}>
+											Duration (minutes)<div></div>
+										</th>
+										<th title="Last Updated" data-field="lastUpdated" style={{ textAlign: 'left' }}>
+											Last Updated<div></div>
+										</th>
+									</tr>
+								</thead>
+							</table>
+						</div>
+						<div className="react-bs-container-body" style={{ height: '100%' }}>
+							<table className="table table-striped table-bordered table-hover">
+								<colgroup>
+									<col style={{ width: '20%', minWidth: '20%' }} />
+									<col style={{ width: '150px', minWidth: '150px' }} />
+									<col style={{ width: '150px', minWidth: '150px' }} />
+									<col style={{ width: '80px', minWidth: '80px' }} />
+									<col />
+									<col style={{ width: '180px', minWidth: '180px' }} />
+									<col style={{ width: '140px', minWidth: '140px' }} />
+								</colgroup>
+								<tbody>
+									{data.slice((pageNumber - 1) * 10, pageNumber * 10).map((item, index) => (
+										<tr key={index}>
+											<td tabIndex="1" style={{ textAlign: 'left' }}>
+												<div className="info-indicator d-flex align-items-center" style={{ whiteSpace: 'pre-wrap' }}>
+													{item.assignment === 0 && <div className="round mr-2"><i className="info fa fa-info"></i></div>}
+													{item.assignment === 1 && <div className="round yellow mr-2"><i className="info fa fa-info"></i></div>}
+													{item.assignment === 2 && <div className="round red mr-2"><i className="info fa fa-info"></i></div>}
+													{item.assignment === 3 && <div className="round green mr-2"><i className="info fa fa-info"></i></div>}
+													<span style={{ width: 'calc(100% - 32px)' }}>{item.moduleEN}</span>
+												</div>
+											</td>
+											<td tabIndex="2" style={{ textAlign: 'left' }}>
+												<div className="d-flex align-items-center justify-content-center w-100">
+													<i className={`fa fa-star ${item.avgRatings >= 1 ? 'active' : ''}`}></i>
+													<i className={`fa fa-star ${item.avgRatings >= 2 ? 'active' : ''}`}></i>
+													<i className={`fa fa-star ${item.avgRatings >= 3 ? 'active' : ''}`}></i>
+													<i className={`fa fa-star ${item.avgRatings >= 4 ? 'active' : ''}`}></i>
+													<i className={`fa fa-star ${item.avgRatings >= 5 ? 'active' : ''}`}></i>
+													({item.countRatings})
+												</div>
+											</td>
+											<td tabIndex="3" style={{ textAlign: 'left' }}>
+												<div className="d-flex align-items-center justify-content-center w-100">
+													{item.trainingType}{item.sideBySide === '1' && <i className="fa fa-user-friends"></i>}
+												</div>
+											</td>
+											<td tabIndex="4" style={{ textAlign: 'left' }}>
+												<div className="info-indicator d-flex align-items-center justify-content-center w-100">
+													<div className="round mr-2 text-white">{item.kpi.length}</div>
+												</div>
+											</td>
+											<td tabIndex="5" style={{ textAlign: 'left' }}>
+												<div className="text-center w-100" style={{ whiteSpace: 'pre-wrap' }}>{item.departments}</div>
+											</td>
+											<td tabIndex="6" style={{ textAlign: 'left' }}>
+												<div className="d-flex align-items-center justify-content-center w-100">{item.duration}</div>
+											</td>
+											<td tabIndex="7" style={{ textAlign: 'left' }}>
+												<div className="d-flex align-items-center justify-content-center w-100">{item.lastUpdated}</div>
+											</td>
+										</tr>)
+									)}
+								</tbody>
+							</table>
+						</div>
+					</div>
+					{this.paginationRender()}
+				</div>
 			</div>
 		);
 	}
 }
 
-Home.propTypes = {
-	getDocList: PropTypes.func.isRequired,
-	docList: PropTypes.array,
-	docWithLobsSegments: PropTypes.array,
-	metricsWithDocuments: PropTypes.array,
-};
-
-Home.defaultProps = {
-	docList: [],
-	docWithLobsSegments: [],
-	metricsWithDocuments: [],
-};
-
-const mapStateToProps = state => ({
-	docList: docListSelector(state),
-	docWithLobsSegments: docWithLobsSegmentsSelector(state),
-	metricsWithDocuments: metricsWithDocumentsSelector(state),
-});
-
-const mapDispatchToProps = dispatch => ({
-	getDocList: () => dispatch(getDocList()),
-	getDocWithLobsSegments: () => dispatch(getDocWithLobsSegments()),
-	getMetricsWithDocuments: () => dispatch(getMetricsWithDocuments()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default Home;
