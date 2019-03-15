@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 
 import { Dropdown, DropdownButton } from 'react-bootstrap';
+import '../../../node_modules/bootstrap/dist/css/bootstrap.css';
 
 import './style.css';
 

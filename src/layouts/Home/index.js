@@ -2,10 +2,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 
-// import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
-import '../../../node_modules/bootstrap/dist/css/bootstrap.css';
-// import '../../../node_modules/react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
-
 import DropDownMenu from '../../components/DropDownMenu/index.js';
 import './style.css';
 
