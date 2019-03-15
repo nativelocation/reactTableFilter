@@ -9,6 +9,8 @@ import docWithLobsSegments from '../../assets/json/docWithLobsSegments.json';
 import metricsWithDocuments from '../../assets/json/metricsWithDocuments.json';
 import docList from '../../assets/json/docList.json';
 
+import DetailForm from '../../components/DetailForm/index.js';
+
 class Home extends Component {
 	constructor(props) {
 		super(props);
@@ -24,6 +26,8 @@ class Home extends Component {
 			docWithLobsSegments,
 			metricsWithDocuments,
 			data: [],
+			selectedData: {},
+			showModal: false,
 			pageNumber: 1,
 			filter: [
 				{
@@ -208,9 +212,7 @@ class Home extends Component {
 		};
 	}
 
-	onRowClick = data => {
-		console.log(data);
-	}
+	onRowClick = data => this.setState({ showModal: true, selectedData: data });
 
 	setFilter = filter => this.setState({ filter });
 
@@ -242,9 +244,15 @@ class Home extends Component {
 			data,
 			filter,
 			pageNumber,
+			selectedData,
+			showModal,
 		} = this.state;
 		return (
 			<div id="home" style={{ padding: '1rem' }}>
+				<DetailForm
+					showModal={showModal}
+					data={selectedData}
+				/>
 				<div className="title">Search a document</div>
 				<div className="filter">
 					<div style={{ display: 'flex' }}>
@@ -322,7 +330,7 @@ class Home extends Component {
 								</colgroup>
 								<tbody>
 									{data.slice((pageNumber - 1) * 10, pageNumber * 10).map((item, index) => (
-										<tr key={index}>
+										<tr key={index} onClick={() => this.onRowClick(item)}>
 											<td tabIndex="1" style={{ textAlign: 'left' }}>
 												<div className="info-indicator" style={{ display: 'flex', alignItems: 'center', whiteSpace: 'pre-wrap' }}>
 													{item.assignment === 0 && <div className="round" style={{ marginRight: '4px' }}><i className="info fa fa-info"></i></div>}
