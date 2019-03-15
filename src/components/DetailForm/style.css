@@ -1,0 +1,97 @@
+.detail-form .modal-dialog {
+    width: 75% !important;
+    max-width: 100% !important;
+}
+
+.detail-form .modal-content {
+    border-radius: initial;
+}
+
+.detail-form .modal-content .modal-body {
+    padding: 1.2rem;
+}
+
+.detail-form .modal-dialog .modal-body .modal-title {
+    margin-top: 3rem;
+    margin-bottom: 1.2rem;
+    text-align: center;
+    font-size: 1.8rem;
+}
+
+.detail-form .modal-dialog .modal-body .duration {
+    position: absolute;
+    right: 1.2rem;
+    top: 1.2rem;
+    width: 5.625rem;
+    height: 5.625rem;
+    border: 0.1875rem solid #004b87;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.detail-form .modal-dialog .modal-body .duration .value {
+    color: #004b87;
+    font-size: 2.2rem;
+    line-height: 0.6;
+}
+
+.detail-form .modal-dialog .modal-body .detail {
+    width: 100%;
+    background: #004b87;
+    color: white;
+    text-align: center;
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+    padding: 0.25rem;
+    margin-bottom: 1rem;
+}
+
+.detail-form .modal-dialog .modal-body .detail-fields .detail-field {
+    display: flex;
+}
+.detail-form .modal-dialog .modal-body .detail-fields {
+    margin-top: 2rem;
+}
+
+.detail-form .modal-dialog .modal-body .detail-fields .detail-array {
+    display: flex;
+    margin-top: 2rem;
+}
+
+.detail-form .modal-dialog .modal-body .detail-fields .detail-array .segments {
+    width: calc(33% - 20px);
+    margin-right: 30px;
+}
+
+.detail-form .modal-dialog .modal-body .detail-fields .detail-array .segments .block {
+    width: 100%;
+    border: 2px solid #0000009f;
+    min-height: 300px;
+    box-shadow: 3px 3px 5px;
+}
+
+.detail-form .modal-dialog .modal-body .detail-fields .detail-array .bp-flows {
+    width: calc(33% - 20px);
+    margin-right: 30px;
+}
+
+.detail-form .modal-dialog .modal-body .detail-fields .detail-array .bp-flows .block {
+    width: 100%;
+    border: 2px solid #0000009f;
+    min-height: 300px;
+    box-shadow: 3px 3px 5px;
+}
+
+.detail-form .modal-dialog .modal-body .detail-fields .detail-array .kpi {
+    width: calc(33% - 20px);
+}
+
+.detail-form .modal-dialog .modal-body .detail-fields .detail-array .kpi .block {
+    width: 100%;
+    border: 2px solid #0000009f;
+    min-height: 300px;
+    box-shadow: 3px 3px 5px;
+}
