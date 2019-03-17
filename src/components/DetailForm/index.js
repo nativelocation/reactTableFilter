@@ -8,11 +8,32 @@ import { Modal } from 'react-bootstrap';
 import './style.css';
 
 class DetailForm extends Component {
+    constructor(props) {
+		super(props);
+
+        this.state = {
+            mode: 'detail',
+        }
+    }
+
+    clickAssign = () => this.setState({ mode: 'assign' });
+
+    clickConfirm = () => {}
+
+    closeModal = () => {
+        this.props.closeModal();
+        this.setState({ mode: 'detail' });
+    }
+
+    cancelModal = () => this.setState({ mode: 'detail' });
+
     render() {
         const { data, showModal } = this.props;
+        const { mode } = this.state;
         return (
             <Modal
                 show={showModal}
+                onHide={this.closeModal}
                 className="detail-form show"
             >
                 <Modal.Body>
@@ -21,23 +42,23 @@ class DetailForm extends Component {
                         <div className="value">{data.duration}</div>
                         <div className="duration-unit">Minutes</div>
                     </div>
-                    <div className="detail">Details</div>
-                    <div className="detail-fields">
+                    {mode === 'detail' && <div className="detail">Details</div>}
+                    {mode === 'detail' && <div className="detail-fields">
                         <div className="detail-field">
                             <div style={{ width: '50%', paddingRight: '3rem', paddingLeft: '0.5rem' }}>
                                 <div style={{ display: 'flex' }}>
-                                    <div style={{ width: '70%', color: '#004b87', marginRight: '0.5rem', fontSize: '1.2rem', borderBottom: '1px solid #0000003f' }}>TRAINING TYPE</div><span>{data.trainingType}</span>
+                                    <div style={{ minWidth: '70%', color: '#004b87', marginRight: '0.5rem', fontSize: '1.2rem', borderBottom: '1px solid #0000003f' }}>TRAINING TYPE</div><span>{data.trainingType}</span>
                                 </div>
                                 <div style={{ display: 'flex' }}>
-                                    <div style={{ width: '70%', color: '#004b87', marginRight: '0.5rem', fontSize: '1.2rem', borderBottom: '1px solid #0000003f' }}>CATEGORY</div><span>{data.groupEN}</span>
+                                    <div style={{ minWidth: '70%', color: '#004b87', marginRight: '0.5rem', fontSize: '1.2rem', borderBottom: '1px solid #0000003f' }}>CATEGORY</div><span>{data.groupEN}</span>
                                 </div>
                             </div>
                             <div style={{ width: '50%', paddingRight: '3rem' }}>
                                 <div style={{ display: 'flex' }}>
-                                    <div style={{ paddingRight: '10px', color: '#004b87', marginRight: '0.5rem', fontSize: '1.2rem', borderBottom: '1px solid #0000003f' }}>DESCRIPTION</div><span>{data.descriptionEN}</span>
+                                    <div style={{ minWidth: '8.25rem', paddingRight: '10px', color: '#004b87', marginRight: '0.5rem', fontSize: '1.2rem', borderBottom: '1px solid #0000003f' }}>DESCRIPTION</div><span>{data.descriptionEN}</span>
                                 </div>
                                 <div style={{ display: 'flex' }}>
-                                    <div style={{ paddingRight: '10px', color: '#004b87', marginRight: '0.5rem', fontSize: '1.2rem', borderBottom: '1px solid #0000003f' }}>SIDE BY SIDE</div><span>{data.sideBySide === '1' ? 'Yes' : 'No'}</span>
+                                    <div style={{ minWidth: '8.25rem', paddingRight: '10px', color: '#004b87', marginRight: '0.5rem', fontSize: '1.2rem', borderBottom: '1px solid #0000003f' }}>SIDE BY SIDE</div><span>{data.sideBySide === '1' ? 'Yes' : 'No'}</span>
                                 </div>
                             </div>
                         </div>
@@ -49,6 +70,7 @@ class DetailForm extends Component {
                                     <div style={{}}>SEGMENTS</div>
                                 </div>
                                 <div className="block">
+                                    {(data.departmentsList && data.departmentsList.length > 0) && data.departmentsList.map((item, index) => (<div key={index} style={{ fontSize: '14px' }}>{item}</div>))}
                                 </div>
                             </div>
                             <div className="bp-flows">
@@ -67,10 +89,23 @@ class DetailForm extends Component {
                                     <div style={{}}>KPI</div>
                                 </div>
                                 <div className="block">
+                                    {(data.kpi && data.kpi.length > 0) && data.kpi.map((item, index) => (<div key={index} style={{ fontSize: '14px' }}>{item}</div>))}
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>}
+                    {mode === 'detail' && <div className="control">
+                        <button className="btn close-btn" onClick={() => this.closeModal()}>Close <i className="fa fa-times-circle" style={{ color: 'black' }}></i></button>
+                        <button className="btn close-btn" onClick={() => this.clickAssign()}>Assign to you & Launch <i className="fa fa-rocket" style={{ color: 'black' }}></i></button>
+                    </div>}
+                    {mode === 'assign' && <div className="assign-title">Are you sure you want to launch this document ?</div>}
+                    {mode === 'assign' && <div className="assign-info">
+                        By launching this document, you will be automatically assigned and redirected to it.
+                    </div>}
+                    {mode === 'assign' && <div className="assign-control">
+                        <button className="btn cancel-btn" onClick={() => this.cancelModal()}>Cancel</button>
+                        <button className="btn confirm-btn" onClick={() => this.clickConfirm()}>Confirm</button>
+                    </div>}
                 </Modal.Body>
             </Modal>
         );
@@ -80,10 +115,12 @@ class DetailForm extends Component {
 DetailForm.propTypes = {
     data: PropTypes.object.isRequired,
     showModal: PropTypes.bool,
+    closeModal: PropTypes.func,
 };
 
 DetailForm.defaultProps = {
-	showModal: false,
+    showModal: false,
+    closeModal: () => {},
 };
 
 export default DetailForm;

@@ -7,6 +7,7 @@ import './style.css';
 
 import docWithLobsSegments from '../../assets/json/docWithLobsSegments.json';
 import metricsWithDocuments from '../../assets/json/metricsWithDocuments.json';
+import bpiFlowsList from '../../assets/json/BPIFlowsList.json';
 import docList from '../../assets/json/docList.json';
 
 import DetailForm from '../../components/DetailForm/index.js';
@@ -25,9 +26,11 @@ class Home extends Component {
 			docList,
 			docWithLobsSegments,
 			metricsWithDocuments,
+			bpiFlowsList,
 			data: [],
 			selectedData: {},
 			showModal: false,
+			searchInput: '',
 			pageNumber: 1,
 			filter: [
 				{
@@ -66,8 +69,9 @@ class Home extends Component {
 
 	static getDerivedStateFromProps(nextProps, prevState) {
 		let metricsData = [], docData = [];
-		const { docList, docWithLobsSegments, metricsWithDocuments } = prevState;
+		const { docList, docWithLobsSegments, metricsWithDocuments, bpiFlowsList } = prevState;
 		const filter = prevState.filter.slice();
+		const searchInput = prevState.searchInput;
 		if (docWithLobsSegments.length > 0) {
 			filter[0].list = docWithLobsSegments.map(item => item.lob);
 		}
@@ -93,16 +97,20 @@ class Home extends Component {
 			});
 			filter[3].list = _.sortBy(_.uniq(metricsWithDocuments.map(metricsWithDocument => metricsWithDocument.metricName)));
 		}
+		if (docList.length > 0 && bpiFlowsList.length > 0) {
+			filter[2].list = _.sortBy(_.uniq(bpiFlowsList.map(bpiFlowList => bpiFlowList.profileName)));
+		}
 		if (docList.length > 0 && docWithLobsSegments.length > 0) {
 			const tData = metricsData.length > 0 ? metricsData : docList;
 			docData = tData.map(docItem => {
-				let departments = '';
+				let departments = '', departmentsList = [];
 				if (docWithLobsSegments.length > 0) {
 					docWithLobsSegments.forEach(docWithLobsSegment => {
 						docWithLobsSegment.subs.forEach(sub => {
 							sub.subs.forEach(item => {
 								if (item.docID === docItem.docID) {
 									departments = departments === '' ? docWithLobsSegment.lob + ' - ' + sub.dept_name : departments + ', ' + docWithLobsSegment.lob + ' - ' + sub.dept_name;
+									departmentsList.push(docWithLobsSegment.lob + ' - ' + sub.dept_name + ' - ' + sub.segment);
 								}
 							})
 						})
@@ -111,6 +119,7 @@ class Home extends Component {
 				return {
 					...docItem,
 					departments,
+					departmentsList,
 				};
 			});
 			if (docWithLobsSegments.length > 0) {
@@ -203,6 +212,9 @@ class Home extends Component {
 				return flag;
 			}
 		});
+		if (searchInput !== '') {
+			_.remove(data, item => !item.descriptionEN.includes(searchInput))
+		}
 		return {
 			docList,
 			docWithLobsSegments,
@@ -215,6 +227,10 @@ class Home extends Component {
 	onRowClick = data => this.setState({ showModal: true, selectedData: data });
 
 	setFilter = filter => this.setState({ filter });
+
+	closeModal = () => this.setState({ showModal: false });
+
+	searchInput = event => this.setState({ searchInput: event.target.value });
 
 	indicatorRender = (color, title) => (
 		<div className="info-indicator" style={{ display: 'flex', alignItems: 'center', paddingRight: '4px' }}>
@@ -252,6 +268,7 @@ class Home extends Component {
 				<DetailForm
 					showModal={showModal}
 					data={selectedData}
+					closeModal={this.closeModal}
 				/>
 				<div className="title">Search a document</div>
 				<div className="filter">
@@ -265,7 +282,7 @@ class Home extends Component {
 							/>))}
 
 						<div className="search-key-container">
-							<input className="search-key" />
+							<input className="search-key" onChange={this.searchInput}/>
 						</div>
 
 						<div className="btn search-btn"><i className="fa fa-search" /></div>

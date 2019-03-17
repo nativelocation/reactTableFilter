@@ -48,6 +48,14 @@ code {
   content: "\f500";
 }
 
+.fa-rocket:before {
+  content: "\f135";
+}
+
+.fa-times-circle:before {
+  content: "\f057";
+}
+
 .btn {
   display: inline-block;
   font-weight: 400;
@@ -80,4 +88,17 @@ table {
   align-items: center;
   justify-content: center;
   width: 100%;
+}
+
+.close-btn {
+  border: 1px solid;
+  font-size: 0.875rem;
+  padding: 0.25rem 1rem;
+}
+
+.cancel-btn,
+.confirm-btn {
+  border: 1px solid;
+  font-size: 0.875rem;
+  padding: 0.25rem 3rem;
 }
