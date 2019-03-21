@@ -50,7 +50,7 @@ class DetailForm extends Component {
     renderField = (field, name) => (
         <div className="field">
             <div className="text">
-                <span className="mandatory">*</span><span>{name}</span>
+                {(field === 'moduleEN' || field === 'moduleFR') && <span className="mandatory">*</span>}<span>{name}</span>
             </div>
             <input type="text" onChange={(event) => this.onFieldChange(event, field)} value={this.state.type === 'editModal' ? this.state.data[field] : ''}></input>
         </div>
@@ -173,48 +173,66 @@ class DetailForm extends Component {
                         </div>}
                     </div>}
                     {(type === 'editModal' || type === 'addModal') && <div className="adddocForm">
-                        <div className="edit-fields">
-                            {type === 'editModal' && <div style={{ display: 'flex' }}>
-                                <div className="left-edit-fields">
-                                    <div className="field">
-                                        <div className="text">
-                                            <span className="mandatory">*</span><span>Person who approve :</span>
+                        <div style={{ maxHeight: '32rem', overflowY: 'scroll' }}>
+                            <div className="edit-fields">
+                                {type === 'editModal' && <div style={{ display: 'flex' }}>
+                                    <div className="left-edit-fields">
+                                        <div className="field">
+                                            <div className="text">
+                                                <span className="mandatory">*</span><span>Person who approve :</span>
+                                            </div>
+                                            <input type="text"></input>
                                         </div>
-                                        <input type="text"></input>
+                                    </div>
+                                    <div className="right-edit-fields">
+                                        <div className="field">
+                                            <div className="text">
+                                                <span className="mandatory">*</span><span>Reason for change :</span>
+                                            </div>
+                                            <input type="text"></input>
+                                        </div>
+                                    </div>
+                                </div>}
+                                {type === 'editModal' && <div style={{ height: '0.125rem', width: 'calc(81% - 2.5rem)', background: '#000000bf', margin: '1rem 2.5rem 1rem auto' }}></div>}
+                                <div style={{ display: 'flex' }}>
+                                    <div className="left-edit-fields">
+                                        {this.renderField('moduleEN', 'Name EN :')}
+                                        {this.renderField('groupEN', 'Category EN :')}
+                                        {this.renderField('CDOC', 'CDOC # :')}
+                                        {this.renderField('duration', 'Duration :')}
+                                        {this.renderField('descriptionEN', 'Description EN :')}
+                                        {this.renderField('keywordsEN', 'Keywords EN :')}
+                                        {this.renderField('trainingType', 'Training Type :')}
+                                        {/* <div className="field">
+                                            <div className="text">
+                                                Active :
+                                            </div>
+                                            <div style={{ display: 'flex', width: '100%' }}>
+                                                <div className="btn check-btn" onClick={() => this.cancelModal()}>YES</div>
+                                                <div className="btn check-btn" onClick={() => this.cancelModal()}>No</div>
+                                            </div>
+                                        </div> */}
+                                    </div>
+                                    <div className="right-edit-fields">
+                                        {this.renderField('moduleFR', 'Name FR :')}
+                                        {this.renderField('groupFR', 'Category FR :')}
+                                        {this.renderField('onlineCode', 'Online Code :')}
+                                        {this.renderField('expiryDate', 'Expiry Date :')}
+                                        {this.renderField('descriptionFR', 'Description FR :')}
+                                        {this.renderField('keywordsFR', 'Keywords FR :')}
+                                        {this.renderField('comments', 'Comments :')}
+                                        {/* <div className="field">
+                                            <div className="text">
+                                                Side By Side :
+                                            </div>
+                                            <div style={{ display: 'flex', width: '100%' }}>
+                                                <div className="btn check-btn" onClick={() => this.cancelModal()}>YES</div>
+                                                <div className="btn check-btn" onClick={() => this.cancelModal()}>No</div>
+                                            </div>
+                                        </div> */}
                                     </div>
                                 </div>
-                                <div className="right-edit-fields">
-                                    <div className="field">
-                                        <div className="text">
-                                            <span className="mandatory">*</span><span>Reason for change :</span>
-                                        </div>
-                                        <input type="text"></input>
-                                    </div>
-                                </div>
-                            </div>}
-                            {type === 'editModal' && <div style={{ height: '0.125rem', width: 'calc(81% - 2.5rem)', background: '#000000bf', margin: '1rem 2.5rem 1rem auto' }}></div>}
-                            <div style={{ display: 'flex' }}>
-                                <div className="left-edit-fields">
-                                    {this.renderField('moduleEN', 'Name EN :')}
-                                    {this.renderField('groupEN', 'Category EN :')}
-                                    {this.renderField('CDOC', 'CDOC # :')}
-                                    {this.renderField('duration', 'Duration :')}
-                                    {this.renderField('descriptionEN', 'Description EN :')}
-                                    {this.renderField('keywordsEN', 'Keywords EN :')}
-                                    {this.renderField('trainingType', 'Training Type :')}
-                                </div>
-                                <div className="right-edit-fields">
-                                    {this.renderField('moduleFR', 'Name FR :')}
-                                    {this.renderField('groupFR', 'Category FR :')}
-                                    {this.renderField('onlineCode', 'Online Code :')}
-                                    {this.renderField('expiryDate', 'Expiry Date :')}
-                                    {this.renderField('descriptionFR', 'Description FR :')}
-                                    {this.renderField('keywordsFR', 'Keywords FR :')}
-                                    {this.renderField('comments', 'Comments :')}
-                                </div>
-                            </div>
-                            <div style={{ height: '0.125rem', width: 'calc(81% - 2.5rem)', background: '#000000bf', margin: '1rem 2.5rem 1rem auto' }}></div>
-                            <div style={{ maxHeight: '32rem', overflowY: 'scroll' }}>
+                                <div style={{ height: '0.125rem', width: 'calc(81% - 2.5rem)', background: '#000000bf', margin: '1rem 2.5rem 1rem auto' }}></div>
                                 {this.renderDataList('departmentsList', 'Segments :')}
                                 <div style={{ height: '0.125rem', width: 'calc(81% - 2.5rem)', background: '#000000bf', margin: '1rem 2.5rem 1rem auto' }}></div>
                                 {this.renderDataList('bpi', 'BPI Flows :')}

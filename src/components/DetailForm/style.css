@@ -183,6 +183,13 @@
     margin-bottom: 0.5rem;
 }
 
+.detail-form .modal-dialog .modal-body .adddocForm .left-edit-fields .field .check-btn,
+.detail-form .modal-dialog .modal-body .adddocForm .right-edit-fields .field .check-btn {
+    width: 50%;
+    border: 1px solid #000000af;
+    border-radius: 0;
+}
+
 .detail-form .modal-dialog .modal-body .adddocForm .left-edit-fields .field .text,
 .detail-form .modal-dialog .modal-body .adddocForm .right-edit-fields .field .text {
     width: 65%;
