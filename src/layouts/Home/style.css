@@ -106,7 +106,7 @@
 }
 
 #home .react-bs-container-body .table td .fa-user-friends {
-    margin-left: 2px;
+    margin-left: 0.125rem;
     color: #0077bf;
 }
 
@@ -127,4 +127,18 @@
     display: flex;
     flex-wrap: wrap;
     margin-top: 0.625rem;
+}
+
+#home .add-doc-btn {
+    border: 0.125rem solid #0077bf;
+    color: #0077bf;
+    padding: 0.4375rem 0.9375rem;
+    margin-top: 2rem;
+    font-size: 1.0625rem;
+    cursor: pointer;
+}
+
+#home .add-doc-btn .fa-plus {
+    color: #0077bf;
+    margin-left: 0.5rem;
 }

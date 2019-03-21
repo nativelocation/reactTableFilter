@@ -29,7 +29,9 @@ class Home extends Component {
 			bpiFlowsList,
 			data: [],
 			selectedData: {},
-			showModal: false,
+			detailModal: false,
+			modalType: 'detailModal',
+			mode: 'detail',
 			searchInput: '',
 			pageNumber: 1,
 			filter: [
@@ -224,11 +226,27 @@ class Home extends Component {
 		};
 	}
 
-	onRowClick = data => this.setState({ showModal: true, selectedData: data });
+	onRowClick = data =>
+		this.setState({
+			detailModal: true,
+			selectedData: data,
+			modalType: 'detailModal',
+			mode: 'detail',
+		});
+
+	addDoc = () =>
+		this.setState({
+			detailModal: true,
+			modalType: 'addModal',
+		});
+
+	closeModal = (modalType, mode) => this.setState({
+		detailModal: false,
+		modalType,
+		mode,
+	});
 
 	setFilter = filter => this.setState({ filter });
-
-	closeModal = () => this.setState({ showModal: false });
 
 	searchInput = event => this.setState({ searchInput: event.target.value });
 
@@ -261,12 +279,16 @@ class Home extends Component {
 			filter,
 			pageNumber,
 			selectedData,
-			showModal,
+			detailModal,
+			modalType,
+			mode,
 		} = this.state;
 		return (
 			<div id="home" style={{ padding: '1rem' }}>
 				<DetailForm
-					showModal={showModal}
+					showModal={detailModal}
+					type={modalType}
+					mode={mode}
 					data={selectedData}
 					closeModal={this.closeModal}
 				/>
@@ -393,6 +415,7 @@ class Home extends Component {
 						</div>
 					</div>
 					{this.paginationRender()}
+					<button className="btn add-doc-btn" onClick={this.addDoc}>Add New Document<i className="fa fa-plus"></i></button>
 				</div>
 			</div>
 		);

@@ -56,6 +56,22 @@ code {
   content: "\f057";
 }
 
+.fa-plus:before {
+  content: "\f067";
+}
+
+.fa-times-circle:before {
+  content: "\f057";
+}
+
+.fa-save:before {
+  content: "\f0c7";
+}
+
+.fa-trash:before {
+  content: "\f1f8";
+}
+
 .btn {
   display: inline-block;
   font-weight: 400;
@@ -101,4 +117,27 @@ table {
   border: 1px solid;
   font-size: 0.875rem;
   padding: 0.25rem 3rem;
+}
+
+.delete-btn {
+  color: #b73434;
+  border: 0.125rem solid #b73434;
+  text-transform: uppercase;
+  padding: 0.3125rem 0.9375rem;
+  text-align: center;
+  display: inline;
+  cursor: pointer;
+}
+
+.add-btn {
+  display: inline-block;
+  border: 0.125rem solid #23a32f;
+  background-color: transparent;
+  color: #23a32f;
+  padding: 0.3125rem 0.625rem;
+  margin: 0 0.3125rem;
+  cursor: pointer;
+  text-transform: uppercase;
+  height: 2.5rem;
+  /* margin-top: 0.6875rem; */
 }
