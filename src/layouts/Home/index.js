@@ -249,7 +249,7 @@ class Home extends Component {
 					} else if (sortValue === 'sortDuration') {
 						value = item[sortField];
 					} else if (sortValue === 'sortUpdate') {
-						value = item[sortField].toLowerCase();
+						value = new Date(item[sortField]).getTime();
 					} else {
 						value = item[sortField].toLowerCase();
 					}
