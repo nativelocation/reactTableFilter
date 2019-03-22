@@ -88,6 +88,14 @@ code {
   content: "\f105";
 }
 
+.fa-caret-down:before {
+  content: "\f0d7";
+}
+
+.fa-caret-up:before {
+  content: "\f0d8";
+}
+
 .btn {
   display: inline-block;
   font-weight: 400;

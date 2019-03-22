@@ -45,6 +45,7 @@
     padding: 0.625rem;
     text-align: center !important;
     border: none;
+    cursor: pointer;
 }
 
 #home .react-bs-container-body .table td {

@@ -67,12 +67,28 @@ class Home extends Component {
 					list: [],
 				},
 			],
+			sortTopic: 'asc',
+			sortRate: 'asc',
+			sortTrain: 'asc',
+			sortKPI: 'asc',
+			sortDepartment: 'asc',
+			sortDuration: 'asc',
+			sortUpdate: 'asc',
+			sortField: 'moduleEN',
+			sortValue: 'sortTopic',
 		}
 	}
 
 	static getDerivedStateFromProps(nextProps, prevState) {
 		let metricsData = [], docData = [];
-		const { docList, docWithLobsSegments, metricsWithDocuments, bpiFlowsList } = prevState;
+		const {
+			docList,
+			docWithLobsSegments,
+			metricsWithDocuments,
+			bpiFlowsList,
+			sortField,
+			sortValue,
+		} = prevState;
 		const filter = prevState.filter.slice();
 		const searchInput = prevState.searchInput;
 		if (docWithLobsSegments.length > 0) {
@@ -222,7 +238,25 @@ class Home extends Component {
 			docList,
 			docWithLobsSegments,
 			metricsWithDocuments,
-			data: _.sortBy(data, item => item.moduleEN.toLowerCase()),
+			data: _.orderBy(
+				data,
+				[item => {
+					let value;
+					if (sortValue === 'sortRate') {
+						value = item[sortField];
+					} else if (sortValue === 'sortKPI') {
+						value = item[sortField].length;
+					} else if (sortValue === 'sortDuration') {
+						value = item[sortField];
+					} else if (sortValue === 'sortUpdate') {
+						value = item[sortField].toLowerCase();
+					} else {
+						value = item[sortField].toLowerCase();
+					}
+					return value;
+				}],
+				[prevState[sortValue]]
+			),
 			filter,
 		};
 	}
@@ -250,6 +284,20 @@ class Home extends Component {
 	setFilter = filter => this.setState({ filter });
 
 	searchInput = event => this.setState({ searchInput: event.target.value });
+	
+	sortUpdate = (key, sortField) => {
+		this.setState({
+			sortTopic: key === 'sortTopic' ? this.state.sortTopic === 'asc' ? 'desc' : 'asc' : 'desc',
+			sortRate: key === 'sortRate' ? this.state.sortRate === 'asc' ? 'desc' : 'asc' : 'desc',
+			sortTrain: key === 'sortTrain' ? this.state.sortTrain === 'asc' ? 'desc' : 'asc' : 'desc',
+			sortKPI: key === 'sortKPI' ? this.state.sortKPI === 'asc' ? 'desc' : 'asc' : 'desc',
+			sortDepartment: key === 'sortDepartment' ? this.state.sortDepartment === 'asc' ? 'desc' : 'asc' : 'desc',
+			sortDuration: key === 'sortDuration' ? this.state.sortDuration === 'asc' ? 'desc' : 'asc' : 'desc',
+			sortUpdate: key === 'sortUpdate' ? this.state.sortUpdate === 'asc' ? 'desc' : 'asc' : 'desc',
+			sortField,
+			sortValue: key,
+		})
+	}
 
 	indicatorRender = (color, title) => (
 		<div className="info-indicator" style={{ display: 'flex', alignItems: 'center', paddingRight: '4px' }}>
@@ -310,31 +358,67 @@ class Home extends Component {
 									<col style={{ width: '150px', minWidth: '150px' }} />
 									<col style={{ width: '80px', minWidth: '80px' }} />
 									<col />
-									<col style={{ width: '180px', minWidth: '180px' }} />
+									<col style={{ width: '200px', minWidth: '200px' }} />
 									<col style={{ width: '140px', minWidth: '140px' }} />
 								</colgroup>
 								<thead>
 									<tr>
-										<th className="sort-column" title="Topic" data-field="moduleEN" style={{ textAlign: 'left' }}>
-											Topic<span className="fa fa-sort-desc" style={{ margin: '10px 5px' }}></span><div></div>
+										<th
+											className="sort-column"
+											title="Topic"
+											data-field="moduleEN"
+											style={{ textAlign: 'left' }}
+											onClick={() => this.sortUpdate('sortTopic', 'moduleEN')}
+										>
+											Topic<i className="fa fa-caret-down" style={{ margin: '10px 5px' }}></i>
 										</th>
-										<th title="Rating" data-field="countRatings" style={{ textAlign: 'left' }}>
-											Rating<div></div>
+										<th
+											title="Rating"
+											data-field="countRatings"
+											style={{ textAlign: 'left' }}
+											onClick={() => this.sortUpdate('sortRate', 'avgRatings')}
+										>
+											Rating<i className="fa fa-caret-down" style={{ margin: '10px 5px' }}></i>
 										</th>
-										<th title="Training Type" data-field="trainingType" style={{ textAlign: 'left' }}>
-											Training Type<div></div>
+										<th
+											title="Training Type"
+											data-field="trainingType"
+											style={{ textAlign: 'left' }}
+											onClick={() => this.sortUpdate('sortTrain', 'trainingType')}
+										>
+											Training Type<i className="fa fa-caret-down" style={{ margin: '10px 5px' }}></i>
 										</th>
-										<th title="KPI" data-field="kpiArray" style={{ textAlign: 'left' }}>
-											KPI<div></div>
+										<th
+											title="KPI"
+											data-field="kpiArray"
+											style={{ textAlign: 'left' }}
+											onClick={() => this.sortUpdate('sortKPI', 'kpi')}
+										>
+											KPI<i className="fa fa-caret-down" style={{ margin: '10px 5px' }}></i>
 										</th>
-										<th title="Departments" data-field="departments" style={{ textAlign: 'left' }}>
-											Departments<div></div>
+										<th
+											title="Departments"
+											data-field="departments"
+											style={{ textAlign: 'left' }}
+											onClick={() => this.sortUpdate('sortDepartment', 'departments')}
+										>
+											Departments<i className="fa fa-caret-down" style={{ margin: '10px 5px' }}></i>
 										</th>
-										<th title="Duration (minutes)" data-field="duration" style={{ textAlign: 'left' }}>
-											Duration (minutes)<div></div>
+										<th
+											title="Duration (minutes)"
+											data-field="duration"
+											style={{ textAlign: 'left' }}
+											onClick={() => this.sortUpdate('sortDuration', 'duration')}
+										>
+											Duration (minutes)<i className="fa fa-caret-down" style={{ margin: '10px 5px' }}></i>
 										</th>
-										<th title="Last Updated" data-field="lastUpdated" style={{ textAlign: 'left' }}>
-											Last Updated<div></div>
+										<th
+											title="Last Updated"
+											data-field="lastUpdated"
+											style={{ textAlign: 'left' }}
+											onClick={() => this.sortUpdate('sortUpdate', 'lastUpdated')}
+										>
+											Last Updated<i className="fa fa-caret-down" style={{ margin: '10px 5px' }}></i>
 										</th>
 									</tr>
 								</thead>
