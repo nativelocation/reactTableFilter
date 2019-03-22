@@ -11,6 +11,7 @@ import bpiFlowsList from '../../assets/json/BPIFlowsList.json';
 import docList from '../../assets/json/docList.json';
 
 import DetailForm from '../../components/DetailForm/index.js';
+import Pagination from '../../components/Pagination/index.js';
 
 class Home extends Component {
 	constructor(props) {
@@ -256,23 +257,6 @@ class Home extends Component {
 		</div>
 	);
 
-	paginationRender = () => {
-		const { data, pageNumber } = this.state;
-		let pagination = [];
-		for(let i = 0; i < (data.length / 10); i++) {
-			pagination.push(
-				<div
-					key={i}
-					className={`pagination-field${(i + 1) === pageNumber ? ' active' : ''}`}
-					onClick={() => this.setState({ pageNumber: i + 1 })}
-				>
-					{i + 1}
-				</div>
-			);
-		}
-		return <div className="pagination-container">{pagination}</div>
-	}
-
 	render() {
 		const {
 			data,
@@ -414,7 +398,11 @@ class Home extends Component {
 							</table>
 						</div>
 					</div>
-					{this.paginationRender()}
+					<Pagination
+						data={data}
+						pageNumber={pageNumber}
+						updatePageNumber={(value) => this.setState({ pageNumber: value })}
+					/>
 					<button className="btn add-doc-btn" onClick={this.addDoc}>Add New Document<i className="fa fa-plus"></i></button>
 				</div>
 			</div>
