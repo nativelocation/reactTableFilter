@@ -110,30 +110,10 @@
     color: #0077bf;
 }
 
-#home .pagination-field {
-    border: 0.0625rem solid;
-    padding: 0.5rem 0.75rem;
-    margin: 0.25rem 0.375rem;
-    width: 3.25rem;
-    text-align: center;
-    cursor: pointer;
-}
-
-#home .pagination-field.active {
-    background: #0077bf;
-}
-
-#home .pagination-container {
-    display: flex;
-    flex-wrap: wrap;
-    margin-top: 0.625rem;
-}
-
 #home .add-doc-btn {
     border: 0.125rem solid #0077bf;
     color: #0077bf;
     padding: 0.4375rem 0.9375rem;
-    margin-top: 2rem;
     font-size: 1.0625rem;
     cursor: pointer;
 }

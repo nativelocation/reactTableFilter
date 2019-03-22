@@ -72,6 +72,22 @@ code {
   content: "\f1f8";
 }
 
+.fa-angle-double-left:before {
+  content: "\f100";
+}
+
+.fa-angle-left:before {
+  content: "\f104";
+}
+
+.fa-angle-double-right:before {
+  content: "\f101";
+}
+
+.fa-angle-right:before {
+  content: "\f105";
+}
+
 .btn {
   display: inline-block;
   font-weight: 400;

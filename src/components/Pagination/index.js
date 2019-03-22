@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import './style.css';
+
 class Pagination extends Component {
     constructor(props) {
 		super(props);
@@ -10,16 +12,12 @@ class Pagination extends Component {
         }
     }
 
-    static getDerivedStateFromProps(nextProps, prevState) {
-        let pageNumber = 1;
-        if (prevState.pageNumber <= (Math.round(nextProps.data.length / 10))) {
-            pageNumber = nextProps.pageNumber;
+    componentWillReceiveProps(nextProps) {
+        if (this.state.pageNumber <= (Math.round(nextProps.data.length / 10))) {
+            this.setState({ pageNumber: nextProps.pageNumber });
         } else {
-            pageNumber = 1;
-            nextProps.updatePageNumber(1);
-        }
-        return {
-            pageNumber,
+            this.setState({ pageNumber: 1 });
+            this.props.updatePageNumber(1);
         }
     }
 
@@ -27,6 +25,7 @@ class Pagination extends Component {
         const { pageNumber } = this.state;
         const { data } = this.props;
         let pagination = [];
+        const dataLength = Math.round(data.length / 10);
         for(let i = 0; i < (Math.round(data.length / 10)); i++) {
             pagination.push(
                 <div
@@ -38,8 +37,24 @@ class Pagination extends Component {
                 </div>
             );
         }
+        let fn = pageNumber > 4 ? pageNumber - 4 : 1;
+        let ln = pageNumber < 6 ? 10 : dataLength > pageNumber + 5 ? pageNumber + 5 : dataLength + 1;
         return (
-            <div className="pagination-container">{pagination}</div>
+            <div className="pagination-container">
+                <div className="btn" onClick={() => this.setState({ pageNumber: 1 })}>
+                    <i className="fa fa-angle-double-left"></i> First
+                </div>
+                <div className="btn" style={{ marginRight: '0.5rem' }} onClick={() => this.setState({ pageNumber: pageNumber > 9 ? pageNumber - 9 : 1 })}>
+                    <i className="fa fa-angle-left"></i> Prev
+                </div>
+                {pagination.slice(fn - 1, ln - 1)}
+                <div className="btn" style={{ marginLeft: '0.5rem' }} onClick={() => this.setState({ pageNumber: (pageNumber + 9) < dataLength ? pageNumber + 9 : dataLength })}>
+                    Next <i className="fa fa-angle-right"></i>
+                </div>
+                <div className="btn" onClick={() => this.setState({ pageNumber: dataLength })}>
+                    Last <i className="fa fa-angle-double-right"></i>
+                </div>
+            </div>
         );
     }
 }

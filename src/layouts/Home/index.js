@@ -398,12 +398,14 @@ class Home extends Component {
 							</table>
 						</div>
 					</div>
-					<Pagination
-						data={data}
-						pageNumber={pageNumber}
-						updatePageNumber={(value) => this.setState({ pageNumber: value })}
-					/>
-					<button className="btn add-doc-btn" onClick={this.addDoc}>Add New Document<i className="fa fa-plus"></i></button>
+					<div style={{ display: 'flex', alignItem: 'center', justifyContent: 'space-between' }}>
+						<button className="btn add-doc-btn" onClick={this.addDoc}>Add New Document<i className="fa fa-plus"></i></button>
+						<Pagination
+							data={data}
+							pageNumber={pageNumber}
+							updatePageNumber={(value) => this.setState({ pageNumber: value })}
+						/>
+					</div>
 				</div>
 			</div>
 		);
