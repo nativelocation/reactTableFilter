@@ -1,24 +1,31 @@
-.detail-form .modal-dialog {
-    width: 75% !important;
-    max-width: 100% !important;
-}
-
-.detail-form .modal-content {
+.detail-form {
+    position: absolute;
+    top: 5rem;
+    left: 5rem;
+    right: 5rem;
+    bottom: 5rem;
+    background-color: white;
     border-radius: initial;
-}
-
-.detail-form .modal-content .modal-body {
     padding: 1.2rem;
 }
 
-.detail-form .modal-dialog .modal-body .modal-title {
+.Overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #aaaaaaaf;
+}
+
+.detail-form .modal-title {
     margin-top: 3rem;
     margin-bottom: 1.2rem;
     text-align: center;
     font-size: 1.8rem;
 }
 
-.detail-form .modal-dialog .modal-body .detailForm .duration {
+.detail-form .detailForm .duration {
     position: absolute;
     right: 1.2rem;
     top: 1.2rem;
@@ -32,14 +39,14 @@
     flex-direction: column;
 }
 
-.detail-form .modal-dialog .modal-body .detailForm .duration .value {
+.detail-form .detailForm .duration .value {
     color: #004b87;
     font-size: 2.2rem;
     line-height: 0.6;
 }
 
-.detail-form .modal-dialog .modal-body .detail,
-.detail-form .modal-dialog .modal-body .edit {
+.detail-form .detail,
+.detail-form .edit {
     width: 100%;
     color: white;
     text-align: center;
@@ -49,49 +56,49 @@
     margin-bottom: 1rem;
 }
 
-.detail-form .modal-dialog .modal-body .detailModal,
-.detail-form .modal-dialog .modal-body .editModal {
+.detail-form .detailModal,
+.detail-form .editModal {
     display: flex;
 }
 
-.detail-form .modal-dialog .modal-body .detailModal .detail,
-.detail-form .modal-dialog .modal-body .editModal .edit {
+.detail-form .detailModal .detail,
+.detail-form .editModal .edit {
     background: #004b87;
 }
 
-.detail-form .modal-dialog .modal-body .editModal .detail,
-.detail-form .modal-dialog .modal-body .detailModal .edit {
+.detail-form .editModal .detail,
+.detail-form .detailModal .edit {
     background: #ced2dc;
 }
 
-.detail-form .modal-dialog .modal-body .edit {
+.detail-form .edit {
     background: #004b87;
 }
 
-.detail-form .modal-dialog .modal-body .detailForm .detail-fields .detail-field {
+.detail-form .detailForm .detail-fields .detail-field {
     display: flex;
 }
-.detail-form .modal-dialog .modal-body .detailForm .detail-fields {
+.detail-form .detailForm .detail-fields {
     margin-top: 2rem;
 }
 
-.detail-form .modal-dialog .modal-body .detailForm .detail-fields .detail-array {
+.detail-form .detailForm .detail-fields .detail-array {
     display: flex;
     margin-top: 2rem;
 }
 
-/* .detail-form .modal-dialog .modal-body .detailForm .detail-fields .detail-array .segments,
-.detail-form .modal-dialog .modal-body .detailForm .detail-fields .detail-array .bp-flows {
+/* .detail-form .detailForm .detail-fields .detail-array .segments,
+.detail-form .detailForm .detail-fields .detail-array .bp-flows {
     margin-right: 2.875rem;
 } */
 
-.detail-form .modal-dialog .modal-body .detailForm .detail-fields .detail-array .data-array {
+.detail-form .detailForm .detail-fields .detail-array .data-array {
     width: calc(33% - 20px);
     color: #004b87;
     font-size: 1.3rem;
 }
 
-.detail-form .modal-dialog .modal-body .detailForm .detail-fields .detail-array .data-array .block {
+.detail-form .detailForm .detail-fields .detail-array .data-array .block {
     width: 100%;
     border: 2px solid #0000009f;
     color: #000000af;
@@ -100,49 +107,49 @@
     padding: 0.5rem;
 }
 
-.detail-form .modal-dialog .modal-body .detailForm .control {
+.detail-form .detailForm .control {
     margin-top: 1.2rem;
     text-align: right;
 }
-.detail-form .modal-dialog .modal-body .detailForm .control .close-btn {
+.detail-form .detailForm .control .close-btn {
     margin-right: 0.5rem;
 }
 
-.detail-form .modal-dialog .modal-body .detailForm .control .close-btn:hover {
+.detail-form .detailForm .control .close-btn:hover {
     background: #000000bf;
     color: white;
 }
 
-.detail-form .modal-dialog .modal-body .detailForm .assign-control {
+.detail-form .detailForm .assign-control {
     text-align: center;
     margin-top: 2rem;
 }
 
-.detail-form .modal-dialog .modal-body .detailForm .assign-control .cancel-btn {
+.detail-form .detailForm .assign-control .cancel-btn {
     margin-right: 0.5rem;
     border-color: #b73434;
 }
 
-.detail-form .modal-dialog .modal-body .detailForm .assign-control .cancel-btn:hover {
+.detail-form .detailForm .assign-control .cancel-btn:hover {
     background: #b73434;
 }
 
-.detail-form .modal-dialog .modal-body .detailForm .assign-control .confirm-btn {
+.detail-form .detailForm .assign-control .confirm-btn {
     border-color: #23a32f;
 }
 
-.detail-form .modal-dialog .modal-body .detailForm .assign-control .confirm-btn:hover {
+.detail-form .detailForm .assign-control .confirm-btn:hover {
     background: #23a32f;
 }
 
-.detail-form .modal-dialog .modal-body .detailForm .assign-title {
+.detail-form .detailForm .assign-title {
     margin-top: 1.625rem;
     color: #069622;
     font-weight: bold;
     font-size: 1.3125rem;
 }
 
-.detail-form .modal-dialog .modal-body .detailForm .assign-info {
+.detail-form .detailForm .assign-info {
     background-color: rgba(213,197,1,.3);
     padding: 0.625rem;
     width: 100%;
@@ -150,32 +157,32 @@
     font-size: 0.875rem;
 }
 
-.detail-form .modal-dialog .modal-body .modal-title-underline {
+.detail-form .modal-title-underline {
     height: 0.125rem;
     background: #000000;
     width: 80%;
     margin: auto;
 }
 
-.detail-form .modal-dialog .modal-body .adddocForm .assign-control {
+.detail-form .adddocForm .assign-control {
     text-align: right;
     margin-top: 2rem;
 }
 
-.detail-form .modal-dialog .modal-body .adddocForm .edit-fields {
+.detail-form .adddocForm .edit-fields {
     margin-top: 2rem;
 }
 
-.detail-form .modal-dialog .modal-body .adddocForm .left-edit-fields {
+.detail-form .adddocForm .left-edit-fields {
     width: calc(50% - 1.25rem);
 }
 
-.detail-form .modal-dialog .modal-body .adddocForm .right-edit-fields {
+.detail-form .adddocForm .right-edit-fields {
     width: calc(50% - 1.25rem);
 }
 
-.detail-form .modal-dialog .modal-body .adddocForm .right-edit-fields .field,
-.detail-form .modal-dialog .modal-body .adddocForm .left-edit-fields .field {
+.detail-form .adddocForm .right-edit-fields .field,
+.detail-form .adddocForm .left-edit-fields .field {
     display: flex;
     align-items: center;
     white-space: nowrap;
@@ -183,21 +190,21 @@
     margin-bottom: 0.5rem;
 }
 
-.detail-form .modal-dialog .modal-body .adddocForm .left-edit-fields .field .check-btn,
-.detail-form .modal-dialog .modal-body .adddocForm .right-edit-fields .field .check-btn {
+.detail-form .adddocForm .left-edit-fields .field .check-btn,
+.detail-form .adddocForm .right-edit-fields .field .check-btn {
     width: 50%;
     border: 1px solid #000000af;
     border-radius: 0;
 }
 
-.detail-form .modal-dialog .modal-body .adddocForm .left-edit-fields .field .text,
-.detail-form .modal-dialog .modal-body .adddocForm .right-edit-fields .field .text {
+.detail-form .adddocForm .left-edit-fields .field .text,
+.detail-form .adddocForm .right-edit-fields .field .text {
     width: 65%;
     text-align: right;
     padding-right: 1rem;
 }
 
-.detail-form .modal-dialog .modal-body .adddocForm .edit-fields .field > input {
+.detail-form .adddocForm .edit-fields .field > input {
     background-color: #f0f0f0;
     border: 0.125rem solid #e1e1e1;
     padding-left: 1.5rem;
@@ -207,46 +214,46 @@
     color: #555;
 }
 
-.detail-form .modal-dialog .modal-body .adddocForm .edit-fields .field .mandatory {
+.detail-form .adddocForm .edit-fields .field .mandatory {
     color: red;
 }
 
-.detail-form .modal-dialog .modal-body .adddocForm .assign-control .cancel-btn {
+.detail-form .adddocForm .assign-control .cancel-btn {
     margin-right: 0.5rem;
     border-color: #b73434;
     width: 17rem;
 }
 
-.detail-form .modal-dialog .modal-body .adddocForm .assign-control .cancel-btn:hover {
+.detail-form .adddocForm .assign-control .cancel-btn:hover {
     background: #b73434;
 }
 
-.detail-form .modal-dialog .modal-body .adddocForm .assign-control .confirm-btn {
+.detail-form .adddocForm .assign-control .confirm-btn {
     border-color: #23a32f;
 }
 
-.detail-form .modal-dialog .modal-body .adddocForm .assign-control .confirm-btn:hover {
+.detail-form .adddocForm .assign-control .confirm-btn:hover {
     background: #23a32f;
 }
 
-.detail-form .modal-dialog .modal-body .adddocForm .edit-fields .data-list .field {
+.detail-form .adddocForm .edit-fields .data-list .field {
     display: flex;
     align-items: center;
     width: calc(100% - 2.5rem);
 }
 
-.detail-form .modal-dialog .modal-body .adddocForm .edit-fields .data-list .field .text {
+.detail-form .adddocForm .edit-fields .data-list .field .text {
     text-align: right;
     padding-right: 1rem;
     white-space: nowrap;
     width: 24%;
 }
 
-.detail-form .modal-dialog .modal-body .adddocForm .edit-fields .data-list .field .lists {
+.detail-form .adddocForm .edit-fields .data-list .field .lists {
     width: 100%;
 }
 
-.detail-form .modal-dialog .modal-body .adddocForm .edit-fields .data-list .field .lists .list {
+.detail-form .adddocForm .edit-fields .data-list .field .lists .list {
     height: 2.8rem;
     padding: 0.5rem;
     display: flex;
@@ -254,32 +261,32 @@
     align-items: center;
 }
 
-.detail-form .modal-dialog .modal-body .adddocForm .edit-fields .data-list .field .lists .list:nth-of-type(odd) {
+.detail-form .adddocForm .edit-fields .data-list .field .lists .list:nth-of-type(odd) {
     background: #e0e0ff;
 }
 
-.detail-form .modal-dialog .modal-body .adddocForm .edit-fields .data-list .field .lists .list .delete-btn {
+.detail-form .adddocForm .edit-fields .data-list .field .lists .list .delete-btn {
     font-size: 0.8rem;
 }
 
-.detail-form .modal-dialog .modal-body .adddocForm .edit-fields .data-list .field .lists .list .delete-btn:hover {
+.detail-form .adddocForm .edit-fields .data-list .field .lists .list .delete-btn:hover {
     background: #b73434;
     color: white;
 }
 
-.detail-form .modal-dialog .modal-body .adddocForm .edit-fields .data-list .field .lists .list .delete-btn .fa-trash {
+.detail-form .adddocForm .edit-fields .data-list .field .lists .list .delete-btn .fa-trash {
     margin-left: 0.4rem;
 }
 
-.detail-form .modal-dialog .modal-body .adddocForm .edit-fields .data-list .field .lists .list .delete-btn:hover .fa-trash {
+.detail-form .adddocForm .edit-fields .data-list .field .lists .list .delete-btn:hover .fa-trash {
     color: white !important;
 }
 
-.detail-form .modal-dialog .modal-body .adddocForm .edit-fields .data-list .field .add-block {
+.detail-form .adddocForm .edit-fields .data-list .field .add-block {
     display: flex;
     align-items: center;
 }
 
-.detail-form .modal-dialog .modal-body .adddocForm .edit-fields .data-list .field .add-block .selector {
+.detail-form .adddocForm .edit-fields .data-list .field .add-block .selector {
   height: 2.5rem;
 }
