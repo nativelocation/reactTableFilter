@@ -99,7 +99,7 @@
 }
 
 .detail-form .detailForm .detail-fields .detail-array .data-array .block {
-    width: 100%;
+    width: calc(100% - 1.1rem);
     border: 2px solid #0000009f;
     color: #000000af;
     min-height: 300px;
@@ -246,7 +246,7 @@
     text-align: right;
     padding-right: 1rem;
     white-space: nowrap;
-    width: 24%;
+    width: calc(24% - 2rem);
 }
 
 .detail-form .adddocForm .edit-fields .data-list .field .lists {

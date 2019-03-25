@@ -13,11 +13,13 @@ class Pagination extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.state.pageNumber <= (Math.round(nextProps.data.length / 10))) {
+        const { pageNumber } = this.state;
+        if (pageNumber <= (Math.round(nextProps.data.length / 10))) {
             this.setState({ pageNumber: nextProps.pageNumber });
-        } else {
-            this.setState({ pageNumber: 1 });
-            this.props.updatePageNumber(1);
+        } else if (this.props.data.length !== nextProps.data.length && pageNumber > (Math.round(nextProps.data.length / 10))) {
+            this.setState({ pageNumber: 1 }, () => {
+                this.props.updatePageNumber(1);
+            });
         }
     }
 
@@ -26,7 +28,8 @@ class Pagination extends Component {
         const { data } = this.props;
         let pagination = [];
         const dataLength = Math.round(data.length / 10);
-        for(let i = 0; i < (Math.round(data.length / 10)); i++) {
+        const loopValue = dataLength < 1 ? 1 : dataLength;
+        for(let i = 0; i < loopValue; i++) {
             pagination.push(
                 <div
                     key={i}
@@ -41,18 +44,18 @@ class Pagination extends Component {
         let ln = pageNumber < 6 ? 10 : dataLength > pageNumber + 5 ? pageNumber + 5 : dataLength + 1;
         return (
             <div className="pagination-container">
-                <div className="btn" onClick={() => this.props.updatePageNumber(1)}>
-                    <i className="fa fa-angle-double-left"></i> First
+                <div onClick={() => this.props.updatePageNumber(1)}>
+                    <i className="fa fa-angle-double-left"></i>
                 </div>
-                <div className="btn" style={{ marginRight: '0.5rem' }} onClick={() => this.props.updatePageNumber(pageNumber > 9 ? pageNumber - 9 : 1)}>
-                    <i className="fa fa-angle-left"></i> Prev
+                <div style={{ marginRight: '0.5rem' }} onClick={() => this.props.updatePageNumber(pageNumber > 9 ? pageNumber - 9 : 1)}>
+                    <i className="fa fa-angle-left"></i>
                 </div>
                 {pagination.slice(fn - 1, ln - 1)}
-                <div className="btn" style={{ marginLeft: '0.5rem' }} onClick={() => this.props.updatePageNumber((pageNumber + 9) < dataLength ? pageNumber + 9 : dataLength)}>
-                    Next <i className="fa fa-angle-right"></i>
+                <div style={{ marginLeft: '0.5rem' }} onClick={() => this.props.updatePageNumber((pageNumber + 9) < dataLength ? pageNumber + 9 : dataLength)}>
+                    <i className="fa fa-angle-right"></i>
                 </div>
-                <div className="btn" onClick={() => this.props.updatePageNumber(dataLength)}>
-                    Last <i className="fa fa-angle-double-right"></i>
+                <div onClick={() => this.props.updatePageNumber(dataLength)}>
+                    <i className="fa fa-angle-double-right"></i>
                 </div>
             </div>
         );

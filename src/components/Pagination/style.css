@@ -1,5 +1,5 @@
 .pagination-field {
-    padding: 0.3rem 0.5rem;
+    padding: 0.3rem 0;
     /* margin: 0.25rem 0.375rem; */
     width: 2.5rem;
     text-align: center;
@@ -25,4 +25,5 @@
 .pagination-container .fa-angle-double-right,
 .pagination-container .fa-angle-right {
     color: #000000af;
+    padding: 1rem;
 }

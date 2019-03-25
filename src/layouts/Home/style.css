@@ -10,7 +10,7 @@
 }
 
 #home .search-key-container .search-key {
-    height: 100%;
+    border-radius: initial;
 }
 
 .search-key-container {
@@ -18,17 +18,16 @@
 }
 
 .search-key {
-    width: 100%;
-    padding: 0.25rem;
+    width: calc(100% - 2rem);
 }
 
 .search-btn {
     flex: 1;
     background: #0077bf !important;
     border-radius: initial;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
 }
 
 #home .react-bs-table-bordered {

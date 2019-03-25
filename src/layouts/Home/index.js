@@ -92,15 +92,15 @@ class Home extends Component {
 		const filter = prevState.filter.slice();
 		const searchInput = prevState.searchInput;
 		if (docWithLobsSegments.length > 0) {
-			filter[0].list = docWithLobsSegments.map(item => item.lob);
+			filter[0].list = docWithLobsSegments.map(item => ({ title: item.lob }));
 		}
 		if (docList.length > 0) {
-			filter[4].list = _.sortBy(_.uniq(docList.map(item => item.duration)));
+			filter[4].list = _.sortBy(_.uniqBy(docList.map(item => ({ title: item.duration })), 'title'), 'title');
 		}
 		if (docList.length > 0 && metricsWithDocuments.length > 0) {
 			metricsData = docList.map(docItem => {
 				let kpi = [];
-				if (metricsWithDocuments.length > 0) {
+				if (metricsWithDocuments.length > 0) {	
 					metricsWithDocuments.forEach(metricsWithDocument => {
 						metricsWithDocument.subs.forEach(sub => {
 							if (sub.docID === docItem.docID) {
@@ -114,10 +114,14 @@ class Home extends Component {
 					kpi,
 				};
 			});
-			filter[3].list = _.sortBy(_.uniq(metricsWithDocuments.map(metricsWithDocument => metricsWithDocument.metricName)));
+			filter[3].list = _.sortBy(_.uniqBy(metricsWithDocuments.map(metricsWithDocument => ({ title: metricsWithDocument.metricName }))), 'title');
 		}
 		if (docList.length > 0 && bpiFlowsList.length > 0) {
-			filter[2].list = _.sortBy(_.uniq(bpiFlowsList.map(bpiFlowList => bpiFlowList.profileName)));
+			filter[2].list = _.sortBy(_.uniqBy(bpiFlowsList.map(bpiFlowList =>
+				({
+					title: bpiFlowList.profileName,
+					subs: bpiFlowList.subs.map(sub => sub.flowName),
+				})), 'title'), 'title');
 		}
 		if (docList.length > 0 && docWithLobsSegments.length > 0) {
 			const tData = metricsData.length > 0 ? metricsData : docList;
@@ -145,12 +149,12 @@ class Home extends Component {
 				filter[1].list = [];
 				if (filter[0].value === '') {
 					docWithLobsSegments.forEach(docWithLobsSegment => {
-						docWithLobsSegment.subs.forEach(sub => filter[1].list.push(docWithLobsSegment.lob + ' - ' + sub.dept_name + ' - ' + sub.segment));
+						docWithLobsSegment.subs.forEach(sub => filter[1].list.push({ title: docWithLobsSegment.lob + ' - ' + sub.dept_name + ' - ' + sub.segment }));
 					});
 				} else {
 					docWithLobsSegments.forEach(docWithLobsSegment => {
 						if (_.findIndex(filter[0].valueList, item => item === docWithLobsSegment.lob) > -1) {
-							docWithLobsSegment.subs.forEach(sub => filter[1].list.push(docWithLobsSegment.lob + ' - ' + sub.dept_name + ' - ' + sub.segment));
+							docWithLobsSegment.subs.forEach(sub => filter[1].list.push({ title: docWithLobsSegment.lob + ' - ' + sub.dept_name + ' - ' + sub.segment }));
 						}
 					});
 				}
@@ -336,7 +340,7 @@ class Home extends Component {
 							/>))}
 
 						<div className="search-key-container">
-							<input className="search-key" onChange={this.searchInput}/>
+							<input className="search-key btn-lg" onChange={this.searchInput}/>
 						</div>
 
 						<div className="btn search-btn"><i className="fa fa-search" /></div>

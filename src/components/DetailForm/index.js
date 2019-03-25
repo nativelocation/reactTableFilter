@@ -23,7 +23,7 @@ class DetailForm extends Component {
         const { data, type, mode } = nextProps;
         if (data !== this.props.data) {
             this.setState({ data, type, mode });
-        } else {
+        } else if (type !== this.props.type || mode !== this.props.mode) {
             this.setState({ type, mode });
         }
     }
