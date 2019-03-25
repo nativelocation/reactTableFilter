@@ -65,9 +65,9 @@ class DetailForm extends Component {
                 onRequestClose={this.closeModal}
                 className="detail-form show"
                 overlayClassName="Overlay"
+                ariaHideApp={false}
             >
                 {(type === 'detailModal' || type === 'editModal') && <div className="detailForm">
-                    {/* <div className="modal-title">{data.moduleEN}</div> */}
                     <div className="duration">
                         <div className="value">{data.duration}</div>
                         <div className="duration-unit">Minutes</div>
@@ -77,8 +77,8 @@ class DetailForm extends Component {
                 {type === 'addModal' && <div className="modal-title-underline"></div>}
                 {((type === 'detailModal' || type === 'editModal') && mode === 'detail') &&
                     <div className={type === 'detailModal' ? 'detailModal' : 'editModal'}>
-                        <div className="detail" onClick={() => { console.log('here1'); this.setState({ type: 'detailModal' }); }}>Details</div>
-                        <div className="edit" onClick={() => { console.log('here'); this.setState({ type: 'editModal' }); }}>Edit</div>
+                        <div className="detail" onClick={() => this.setState({ type: 'detailModal' })}>Details</div>
+                        <div className="edit" onClick={() => this.setState({ type: 'editModal' })}>Edit</div>
                     </div>
                 }
                 {type === 'detailModal' && <div className="detailForm">
