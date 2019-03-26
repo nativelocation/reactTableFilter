@@ -19,8 +19,6 @@ class DropDownSubMenu extends Component {
         });
     }
 
-    subMenuClick = subIndex => {}
-
     render() {
         const { data, index } = this.props;
         const { show } = this.state;
@@ -39,7 +37,7 @@ class DropDownSubMenu extends Component {
                     <div className={`dropdown-subMenu ${show}`}>
                         {data.subs.map((sub, sIndex) => (
                             <div key={sIndex} >
-                                <div className="dropdown-subItem" onClick={() => this.subMenuClic(sIndex)}>
+                                <div className="dropdown-subItem" onClick={() => this.props.subMenuClick(index, sIndex)}>
                                     {sub}      
                                 </div>
                                 <div className="dropdown-divider"></div>
@@ -53,6 +51,7 @@ class DropDownSubMenu extends Component {
 
 DropDownSubMenu.propTypes = {
     menuClick: PropTypes.func.isRequired,
+    subMenuClick: PropTypes.func.isRequired,
     data: PropTypes.object.isRequired,
     index: PropTypes.number.isRequired,
 };

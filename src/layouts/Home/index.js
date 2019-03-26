@@ -291,13 +291,13 @@ class Home extends Component {
 	
 	sortUpdate = (key, sortField) => {
 		this.setState({
-			sortTopic: key === 'sortTopic' ? this.state.sortTopic === 'asc' ? 'desc' : 'asc' : 'desc',
-			sortRate: key === 'sortRate' ? this.state.sortRate === 'asc' ? 'desc' : 'asc' : 'desc',
-			sortTrain: key === 'sortTrain' ? this.state.sortTrain === 'asc' ? 'desc' : 'asc' : 'desc',
-			sortKPI: key === 'sortKPI' ? this.state.sortKPI === 'asc' ? 'desc' : 'asc' : 'desc',
-			sortDepartment: key === 'sortDepartment' ? this.state.sortDepartment === 'asc' ? 'desc' : 'asc' : 'desc',
-			sortDuration: key === 'sortDuration' ? this.state.sortDuration === 'asc' ? 'desc' : 'asc' : 'desc',
-			sortUpdate: key === 'sortUpdate' ? this.state.sortUpdate === 'asc' ? 'desc' : 'asc' : 'desc',
+			sortTopic: key === 'sortTopic' ? this.state.sortTopic === 'asc' ? 'desc' : 'asc' : 'asc',
+			sortRate: key === 'sortRate' ? this.state.sortRate === 'asc' ? 'desc' : 'asc' : 'asc',
+			sortTrain: key === 'sortTrain' ? this.state.sortTrain === 'asc' ? 'desc' : 'asc' : 'asc',
+			sortKPI: key === 'sortKPI' ? this.state.sortKPI === 'asc' ? 'desc' : 'asc' : 'asc',
+			sortDepartment: key === 'sortDepartment' ? this.state.sortDepartment === 'asc' ? 'desc' : 'asc' : 'asc',
+			sortDuration: key === 'sortDuration' ? this.state.sortDuration === 'asc' ? 'desc' : 'asc' : 'asc',
+			sortUpdate: key === 'sortUpdate' ? this.state.sortUpdate === 'asc' ? 'desc' : 'asc' : 'asc',
 			sortField,
 			sortValue: key,
 		})
@@ -318,6 +318,13 @@ class Home extends Component {
 			detailModal,
 			modalType,
 			mode,
+			sortTopic,
+			sortRate,
+			sortTrain,
+			sortKPI,
+			sortDepartment,
+			sortDuration,
+			sortUpdate,
 		} = this.state;
 		return (
 			<div id="home" style={{ padding: '1rem' }}>
@@ -374,7 +381,7 @@ class Home extends Component {
 											style={{ textAlign: 'left' }}
 											onClick={() => this.sortUpdate('sortTopic', 'moduleEN')}
 										>
-											Topic<i className="fa fa-caret-down" style={{ margin: '10px 5px' }}></i>
+											Topic<i className={`fa fa-caret-${sortTopic === 'asc' ? 'down' : 'up'}`} style={{ margin: '10px 5px' }}></i>
 										</th>
 										<th
 											title="Rating"
@@ -382,7 +389,7 @@ class Home extends Component {
 											style={{ textAlign: 'left' }}
 											onClick={() => this.sortUpdate('sortRate', 'avgRatings')}
 										>
-											Rating<i className="fa fa-caret-down" style={{ margin: '10px 5px' }}></i>
+											Rating<i className={`fa fa-caret-${sortRate === 'asc' ? 'down' : 'up'}`} style={{ margin: '10px 5px' }}></i>
 										</th>
 										<th
 											title="Training Type"
@@ -390,7 +397,7 @@ class Home extends Component {
 											style={{ textAlign: 'left' }}
 											onClick={() => this.sortUpdate('sortTrain', 'trainingType')}
 										>
-											Training Type<i className="fa fa-caret-down" style={{ margin: '10px 5px' }}></i>
+											Training Type<i className={`fa fa-caret-${sortTrain === 'asc' ? 'down' : 'up'}`} style={{ margin: '10px 5px' }}></i>
 										</th>
 										<th
 											title="KPI"
@@ -398,7 +405,7 @@ class Home extends Component {
 											style={{ textAlign: 'left' }}
 											onClick={() => this.sortUpdate('sortKPI', 'kpi')}
 										>
-											KPI<i className="fa fa-caret-down" style={{ margin: '10px 5px' }}></i>
+											KPI<i className={`fa fa-caret-${sortKPI === 'asc' ? 'down' : 'up'}`} style={{ margin: '10px 5px' }}></i>
 										</th>
 										<th
 											title="Departments"
@@ -406,7 +413,7 @@ class Home extends Component {
 											style={{ textAlign: 'left' }}
 											onClick={() => this.sortUpdate('sortDepartment', 'departments')}
 										>
-											Departments<i className="fa fa-caret-down" style={{ margin: '10px 5px' }}></i>
+											Departments<i className={`fa fa-caret-${sortDepartment === 'asc' ? 'down' : 'up'}`} style={{ margin: '10px 5px' }}></i>
 										</th>
 										<th
 											title="Duration (minutes)"
@@ -414,7 +421,7 @@ class Home extends Component {
 											style={{ textAlign: 'left' }}
 											onClick={() => this.sortUpdate('sortDuration', 'duration')}
 										>
-											Duration (minutes)<i className="fa fa-caret-down" style={{ margin: '10px 5px' }}></i>
+											Duration (minutes)<i className={`fa fa-caret-${sortDuration === 'asc' ? 'down' : 'up'}`} style={{ margin: '10px 5px' }}></i>
 										</th>
 										<th
 											title="Last Updated"
@@ -422,7 +429,7 @@ class Home extends Component {
 											style={{ textAlign: 'left' }}
 											onClick={() => this.sortUpdate('sortUpdate', 'lastUpdated')}
 										>
-											Last Updated<i className="fa fa-caret-down" style={{ margin: '10px 5px' }}></i>
+											Last Updated<i className={`fa fa-caret-${sortUpdate === 'asc' ? 'down' : 'up'}`} style={{ margin: '10px 5px' }}></i>
 										</th>
 									</tr>
 								</thead>

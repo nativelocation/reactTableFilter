@@ -12,6 +12,7 @@ class DropDownMenu extends Component {
 
         this.state = {
             show: '',
+            out: false,
         }
     }
 
@@ -38,9 +39,44 @@ class DropDownMenu extends Component {
         this.props.setFilter(newFilter);
 	}
 
+    subMenuClick = (index, sIndex) => {
+        const { filter, id } = this.props;
+        const filterData = filter[id];
+		const data = Object.assign({}, filterData);
+        const length = data.valueList.length;
+        if (index > -1) {
+            _.remove(data.valueList, item => item === filterData.list[index].subs[sIndex]);
+            if (length === data.valueList.length) {
+                data.valueList.push(filterData.list[index].subs[sIndex]);
+            }
+        } else {
+            data.valueList = [];
+        }
+        let value = '';
+        data.valueList.forEach(item => {
+            value = value + item + ', ';
+        });
+        data.value = value;
+        let newFilter = this.props.filter.slice();
+        newFilter[id] = data;
+        this.props.setFilter(newFilter);
+    }
+
     handleShow = () => {
+        if (this.state.out) {
+            this.setState({
+                show: '',
+            });
+        } else {
+            this.setState({
+                show: this.state.show === 'show' ? '' : 'show',
+            });
+        }
+    }
+
+    handleOut = () => {
         this.setState({
-            show: this.state.show === 'show' ? '' : 'show',
+            out: true,
         });
     }
 
@@ -50,12 +86,13 @@ class DropDownMenu extends Component {
         const data = filter[id];
         return (
             <div className={`border dropdown-button-drop-${id} ${show} dropdown`} onMouseEnter={this.handleShow} onMouseLeave={this.handleShow}>
-                <div id={`dropdown-button-drop-${id}`} className="dropdown-toggle btn btn-light btn-lg">
+                <div id={`dropdown-button-drop-${id}`} className={`${show ? 'dropdown-toggle-down' : 'dropdown-toggle'} btn btn-light btn-lg`}>
                     {data.value === '' ? data.placeholder : data.value}
                 </div>
                 <div className={`dropdown-menu ${show}`} style={{ position: 'absolute', willChange: 'transform; top: 0px', left: '0px', transform: 'translate3d(0px, -2px, 0px)' }}>
                     {id !== 2 && <DropDownSubMenu
                         menuClick={this.menuClick}
+                        subMenuClick={this.subMenuClick}
                         index={-1}
                         data={{ title: 'All' }}
                     />}
@@ -64,6 +101,7 @@ class DropDownMenu extends Component {
                         <div key={index}>
                             <DropDownSubMenu
                                 menuClick={this.menuClick}
+                                subMenuClick={this.subMenuClick}
                                 index={index}
                                 data={item}
                             />

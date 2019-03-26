@@ -35,6 +35,17 @@
     border-left: 0.3em solid transparent;
 }
 
+.dropdown-toggle-down::after {
+    display: inline-block;
+    margin-left: 0.255em;
+    vertical-align: 0.255em;
+    content: "";
+    border-bottom: 0.3em solid;
+    border-right: 0.3em solid transparent;
+    border-top: 0;
+    border-left: 0.3em solid transparent;
+}
+
 .dropdown-menu {
     position: absolute;
     top: 100%;
@@ -95,19 +106,21 @@
     border-top: 1px solid #e9ecef;
 }
 
+.show > .btn-light.dropdown-toggle-down,
 .show > .btn-light.dropdown-toggle {
     color: #212529;
     background-color: #dae0e5;
     border-color: #d3d9df;
 }
 
+.dropdown-toggle-down,
 .dropdown-toggle {
     white-space: nowrap;
 }
 
 .dropdown-subMenu {
     position: absolute;
-    left: calc(100% + 0.1rem);
+    left: calc(100% + 0.01rem);
     top: 0;
     padding: 0.5rem 0rem;
     border: 1px solid #000000af;
